@@ -46,6 +46,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddContainer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddContainer.Designer.cs">
+      <DependentUpon>AddContainer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Container.cs" />
     <Compile Include="Ship.cs" />
     <Compile Include="ShipView.cs">
       <SubType>Form</SubType>
@@ -61,6 +68,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="AddContainer.resx">
+      <DependentUpon>AddContainer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ShipView.resx">
       <DependentUpon>ShipView.cs</DependentUpon>
     </EmbeddedResource>

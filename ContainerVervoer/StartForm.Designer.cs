@@ -42,9 +42,19 @@
             // lengthBox
             // 
             this.lengthBox.Location = new System.Drawing.Point(71, 19);
+            this.lengthBox.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.lengthBox.Name = "lengthBox";
             this.lengthBox.Size = new System.Drawing.Size(54, 20);
             this.lengthBox.TabIndex = 0;
+            this.lengthBox.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // label2
             // 
@@ -67,9 +77,19 @@
             // widthBox
             // 
             this.widthBox.Location = new System.Drawing.Point(71, 47);
+            this.widthBox.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.widthBox.Name = "widthBox";
             this.widthBox.Size = new System.Drawing.Size(54, 20);
             this.widthBox.TabIndex = 4;
+            this.widthBox.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // groupBox1
             // 

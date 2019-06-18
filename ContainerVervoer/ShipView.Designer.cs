@@ -30,6 +30,8 @@
         {
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.sortBtn = new System.Windows.Forms.Button();
             this.shipUsedWeightLbl = new System.Windows.Forms.Label();
@@ -41,14 +43,23 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.removeBtn = new System.Windows.Forms.Button();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.containerValueable = new System.Windows.Forms.CheckBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.addBtn = new System.Windows.Forms.Button();
+            this.containerWeight = new System.Windows.Forms.NumericUpDown();
+            this.containerCooled = new System.Windows.Forms.CheckBox();
+            this.containersAmountInput = new System.Windows.Forms.NumericUpDown();
+            this.removeBtn = new System.Windows.Forms.Button();
             this.generateContainersBtn = new System.Windows.Forms.Button();
             this.containerListBox = new System.Windows.Forms.ListBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.containerWeight)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.containersAmountInput)).BeginInit();
             this.SuspendLayout();
             // 
             // dataGridView1
@@ -56,21 +67,42 @@
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(24, 28);
+            this.dataGridView1.Location = new System.Drawing.Point(15, 81);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(683, 487);
+            this.dataGridView1.Size = new System.Drawing.Size(754, 513);
             this.dataGridView1.TabIndex = 0;
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.comboBox1);
             this.groupBox1.Controls.Add(this.dataGridView1);
-            this.groupBox1.Location = new System.Drawing.Point(279, 0);
+            this.groupBox1.Location = new System.Drawing.Point(485, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(728, 533);
+            this.groupBox1.Size = new System.Drawing.Size(792, 614);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Ship";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(23, 29);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(36, 13);
+            this.label1.TabIndex = 25;
+            this.label1.Text = "Layer:";
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "Sort first"});
+            this.comboBox1.Location = new System.Drawing.Point(26, 45);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(121, 21);
+            this.comboBox1.TabIndex = 24;
             // 
             // groupBox2
             // 
@@ -85,7 +117,7 @@
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Location = new System.Drawing.Point(12, 0);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(261, 215);
+            this.groupBox2.Size = new System.Drawing.Size(467, 215);
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Ship info";
@@ -98,6 +130,7 @@
             this.sortBtn.TabIndex = 1;
             this.sortBtn.Text = "Sort";
             this.sortBtn.UseVisualStyleBackColor = true;
+            this.sortBtn.Click += new System.EventHandler(this.sortBtn_Click);
             // 
             // shipUsedWeightLbl
             // 
@@ -173,59 +206,136 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.groupBox4);
+            this.groupBox3.Controls.Add(this.containersAmountInput);
             this.groupBox3.Controls.Add(this.removeBtn);
-            this.groupBox3.Controls.Add(this.addBtn);
             this.groupBox3.Controls.Add(this.generateContainersBtn);
             this.groupBox3.Controls.Add(this.containerListBox);
             this.groupBox3.Location = new System.Drawing.Point(12, 221);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(261, 312);
+            this.groupBox3.Size = new System.Drawing.Size(467, 393);
             this.groupBox3.TabIndex = 3;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Containers";
             // 
-            // removeBtn
+            // groupBox4
             // 
-            this.removeBtn.Location = new System.Drawing.Point(88, 279);
-            this.removeBtn.Name = "removeBtn";
-            this.removeBtn.Size = new System.Drawing.Size(75, 23);
-            this.removeBtn.TabIndex = 22;
-            this.removeBtn.Text = "Remove";
-            this.removeBtn.UseVisualStyleBackColor = true;
+            this.groupBox4.Controls.Add(this.containerValueable);
+            this.groupBox4.Controls.Add(this.label4);
+            this.groupBox4.Controls.Add(this.addBtn);
+            this.groupBox4.Controls.Add(this.containerWeight);
+            this.groupBox4.Controls.Add(this.containerCooled);
+            this.groupBox4.Location = new System.Drawing.Point(215, 292);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(229, 95);
+            this.groupBox4.TabIndex = 27;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Add";
+            // 
+            // containerValueable
+            // 
+            this.containerValueable.AutoSize = true;
+            this.containerValueable.Location = new System.Drawing.Point(16, 19);
+            this.containerValueable.Name = "containerValueable";
+            this.containerValueable.Size = new System.Drawing.Size(73, 17);
+            this.containerValueable.TabIndex = 25;
+            this.containerValueable.Text = "Valueable";
+            this.containerValueable.UseVisualStyleBackColor = true;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(16, 68);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(44, 13);
+            this.label4.TabIndex = 26;
+            this.label4.Text = "Weight:";
             // 
             // addBtn
             // 
-            this.addBtn.Location = new System.Drawing.Point(7, 279);
+            this.addBtn.Location = new System.Drawing.Point(123, 19);
             this.addBtn.Name = "addBtn";
             this.addBtn.Size = new System.Drawing.Size(75, 23);
             this.addBtn.TabIndex = 21;
             this.addBtn.Text = "Add";
             this.addBtn.UseVisualStyleBackColor = true;
+            this.addBtn.Click += new System.EventHandler(this.addBtn_Click);
+            // 
+            // containerWeight
+            // 
+            this.containerWeight.Location = new System.Drawing.Point(86, 68);
+            this.containerWeight.Maximum = new decimal(new int[] {
+            30000,
+            0,
+            0,
+            0});
+            this.containerWeight.Minimum = new decimal(new int[] {
+            4000,
+            0,
+            0,
+            0});
+            this.containerWeight.Name = "containerWeight";
+            this.containerWeight.Size = new System.Drawing.Size(103, 20);
+            this.containerWeight.TabIndex = 26;
+            this.containerWeight.Value = new decimal(new int[] {
+            4000,
+            0,
+            0,
+            0});
+            // 
+            // containerCooled
+            // 
+            this.containerCooled.AutoSize = true;
+            this.containerCooled.Location = new System.Drawing.Point(16, 42);
+            this.containerCooled.Name = "containerCooled";
+            this.containerCooled.Size = new System.Drawing.Size(59, 17);
+            this.containerCooled.TabIndex = 24;
+            this.containerCooled.Text = "Cooled";
+            this.containerCooled.UseVisualStyleBackColor = true;
+            // 
+            // containersAmountInput
+            // 
+            this.containersAmountInput.Location = new System.Drawing.Point(141, 360);
+            this.containersAmountInput.Name = "containersAmountInput";
+            this.containersAmountInput.Size = new System.Drawing.Size(45, 20);
+            this.containersAmountInput.TabIndex = 23;
+            // 
+            // removeBtn
+            // 
+            this.removeBtn.Location = new System.Drawing.Point(7, 307);
+            this.removeBtn.Name = "removeBtn";
+            this.removeBtn.Size = new System.Drawing.Size(75, 23);
+            this.removeBtn.TabIndex = 22;
+            this.removeBtn.Text = "Remove";
+            this.removeBtn.UseVisualStyleBackColor = true;
+            this.removeBtn.Click += new System.EventHandler(this.removeBtn_Click);
             // 
             // generateContainersBtn
             // 
-            this.generateContainersBtn.Location = new System.Drawing.Point(76, 8);
+            this.generateContainersBtn.Location = new System.Drawing.Point(7, 350);
             this.generateContainersBtn.Name = "generateContainersBtn";
-            this.generateContainersBtn.Size = new System.Drawing.Size(153, 23);
+            this.generateContainersBtn.Size = new System.Drawing.Size(105, 37);
             this.generateContainersBtn.TabIndex = 20;
             this.generateContainersBtn.Text = "Generate containers";
             this.generateContainersBtn.UseVisualStyleBackColor = true;
+            this.generateContainersBtn.Click += new System.EventHandler(this.generateContainersBtn_Click);
             // 
             // containerListBox
             // 
             this.containerListBox.FormattingEnabled = true;
             this.containerListBox.Items.AddRange(new object[] {
-            "Generate containers or add on yourself"});
+            "Generate containers",
+            " or add on yourself"});
             this.containerListBox.Location = new System.Drawing.Point(7, 35);
             this.containerListBox.Name = "containerListBox";
-            this.containerListBox.Size = new System.Drawing.Size(233, 238);
+            this.containerListBox.Size = new System.Drawing.Size(437, 251);
             this.containerListBox.TabIndex = 0;
             // 
             // ShipView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1016, 538);
+            this.ClientSize = new System.Drawing.Size(1280, 696);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -233,9 +343,14 @@
             this.Text = "SchipView";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.containerWeight)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.containersAmountInput)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -259,5 +374,13 @@
         private System.Windows.Forms.Button removeBtn;
         private System.Windows.Forms.Button addBtn;
         private System.Windows.Forms.Button generateContainersBtn;
+        private System.Windows.Forms.NumericUpDown containersAmountInput;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.NumericUpDown containerWeight;
+        private System.Windows.Forms.CheckBox containerValueable;
+        private System.Windows.Forms.CheckBox containerCooled;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.GroupBox groupBox4;
     }
 }
