@@ -28,15 +28,22 @@ namespace ContainerVervoer
                 if (width <= 0 || length <= 0)
                 {
                     throw new Exception("Insert values higher than 0!");
+       
+                }
+                else if (width > length)
+                {
+                    throw new Exception("Insert higher length then width");
                 }
                 ShipView view = new ShipView(width,length);
-                view.Show();
-                this.Hide();
+                this.Hide();          
+                view.ShowDialog();     
+                this.Show();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
         }
+
     }
 }

@@ -47,23 +47,38 @@ namespace ContainerVervoer
 
         private void sortBtn_Click(object sender, EventArgs e)
         {
-            comboBox1.Items.Clear();
-            for (int i = 0; i < 12; i++)
+            int weightToAdd = ship.checkWeight();//TODO check dis
+            if (weightToAdd > -1) 
             {
-                comboBox1.Items.Add(i);
+                MessageBox.Show($"Not enough weight, add {weightToAdd} weight"); //TODO check dis
+                return;
             }
+            layersBox.Items.Clear();
+            ship.PlaceContainersInShip();
+            /*for (int i = 0; i < 12; i++)
+            {
+                layersBox.Items.Add(i); //TODO add total layers here
+            }*/
         }
 
         private void removeBtn_Click(object sender, EventArgs e)
         {
-            if (containerListBox.SelectedIndex > -1)
+            int index = containerListBox.SelectedIndex;
+            if (index > -1 )
             {
-
+                containerListBox.Items.RemoveAt(index);
+                ship.removeContainer(index);
             }
             else
             {
                 MessageBox.Show("Select a container to remove");
             }
+        }
+
+        private void clearAllContainer_Click(object sender, EventArgs e)
+        {
+            ship.removeAllContainers();
+            containerListBox.Items.Clear();
         }
     }
 }
