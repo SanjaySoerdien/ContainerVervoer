@@ -10,39 +10,41 @@ namespace ContainerVervoer
     {
         #region Fields
         private int weight;
-        private bool valueable;
+        private bool valuable;
         private bool cooled;
         #endregion
 
         #region Properties
         public int Weight => weight;
-        public bool Valueable => valueable;
+        public bool Valuable => valuable;
         public bool Cooled => cooled;
         #endregion
 
         public Container(int weight, bool valuable, bool cooled)
         {
             this.weight = weight;
-            this.valueable = valuable;
+            this.valuable = valuable;
             this.cooled = cooled;
         }
 
         public override string ToString()
         {
-            if (cooled && valueable)
+            if (cooled && valuable)
             {
                 return $"Cooled & valueable Container \n Weight:{weight}kg";
 
             }
             else if(cooled)
             {
-                return $"Cooled Container \n Weight:{weight}kg";
+                return $"Cooled Container \t \n Weight:{weight}kg";
             }
-            else if (valueable)
+            else if (valuable)
             {
-                return $"Valueable Container \n Weight:{weight}kg";
+                return $"Valuable Container \t \n Weight:{weight}kg";
             }
-            return $"Container \n Weight:{weight}kg";
+            return $"Container \t \t \n Weight:{weight}kg";
         }
+
+      
     }
 }

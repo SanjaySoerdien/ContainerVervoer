@@ -35,10 +35,13 @@ namespace ContainerVervoer
         {
             
             Container containerToAdd = new Container(Convert.ToInt32(containerWeight.Text), containerValueable.Checked, containerCooled.Checked);
-            string result = ship.addContainer(containerToAdd);
-            if (result != "Succes")
+            ErrorMessage result = ship.addContainer(containerToAdd);
+            if (result != ErrorMessage.Succes)
             {
-                MessageBox.Show(result);
+                if (result == ErrorMessage.TooHeavy)
+                {
+                    MessageBox.Show("Container is too heavy to be added");
+                }
                 return;
             }
             containerListBox.Items.Clear();
@@ -47,9 +50,14 @@ namespace ContainerVervoer
 
         private void sortBtn_Click(object sender, EventArgs e)
         {
-            int weightToAdd = ship.checkWeight();//TODO check dis
-            if (weightToAdd > -1) 
+            if (!ship.checkWeight())
             {
+                int containerTotalWeight = 0;
+                foreach (Container container in ship.Containers)
+                {
+                    containerTotalWeight += container.Weight;
+                }
+                int weightToAdd = (ship.MaxWeight / 2) - containerTotalWeight; 
                 MessageBox.Show($"Not enough weight, add {weightToAdd} weight"); //TODO check dis
                 return;
             }

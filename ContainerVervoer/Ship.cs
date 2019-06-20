@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics.Eventing.Reader;
 using System.Drawing.Text;
 using System.Linq;
 using System.Runtime.ExceptionServices;
@@ -20,13 +21,9 @@ namespace ContainerVervoer
         private int balance;//TODO maak in view ? enzo? idk maybe remove
         private int weightLeft;
         private int weightRight;
-        private int layers;
      
         private List<Container> containers;
-        private List<List<List<Container>>> shipLayout = new List<List<List<Container>>>();
-
-        private int amountValueable = 0;
-        private int maxValueables = 0;
+        private List<Layer> layers;
         #endregion
 
         #region Properties
@@ -47,38 +44,15 @@ namespace ContainerVervoer
             this.length = length;
             this.width = width;
             maxWeight = length * width * 150000;
-            maxValueables = length * width;
-            InstanceLists();
+            layers = new List<Layer>();
         }
 
-        private void InstanceLists()
+        public ErrorMessage addContainer(Container container)
         {
-            for (int i = 0; i < width; i++)
-            {
-                List<List<Container>> rowList = new List<List<Container>>();
-                for (int x = 0; x < length; x++)
-                {
-                    List<Container> collum = new List<Container>();
-                    rowList.Add(collum);
-                }
-                shipLayout.Add(rowList);
-            }
-        }
-
-        public string addContainer(Container container)
-        {
-            string result = "Succes";
+            ErrorMessage result = ErrorMessage.Succes;
             if (currentWeight + container.Weight >= maxWeight)
             {
-                return "Too heavy";
-            }
-            else if (container.Valueable)
-            {
-                if (amountValueable >= maxValueables)
-                {
-                    return "Too many valueables";
-                }
-                amountValueable++;
+                return ErrorMessage.TooHeavy;
             }
             containers.Add(container);
             currentWeight += container.Weight;
@@ -108,7 +82,7 @@ namespace ContainerVervoer
             }
         }
 
-        public int checkWeight()
+        public bool checkWeight()
         {
             int totalWeight = 0;
             int weightToCheck = maxWeight / 2;
@@ -119,55 +93,37 @@ namespace ContainerVervoer
             }
             if (totalWeight < maxWeight / 2)
             {
-                return  weightToCheck - totalWeight;
+                return false;
             }
-            return -1;
+            return true;
         }
 
         private List<Container> GetAllNormalContainers()
         {
-            List<Container> result = new List<Container>();
-            foreach (Container container in containers.Where(x => !x.Valueable && !x.Cooled).OrderBy(x => x.Weight).Reverse())
-            {
-                result.Add(container);
-            }
-            return result;
+            return containers.Where(x => !x.Valuable && !x.Cooled).OrderBy(x => x.Weight).Reverse().ToList();
+
         }
 
         private List<Container> GetAllValueableContainers()
         {
-            List<Container> result = new List<Container>();
-            foreach (Container container in containers.Where(x => x.Valueable && !x.Cooled).OrderBy(x => x.Weight).Reverse())
-            {
-                result.Add(container);
-            }
-            return result;
+            return containers.Where(x => x.Valuable && !x.Cooled).OrderBy(x => x.Weight).Reverse().ToList();
         }
 
         private List<Container> GetAllCooledContainers()
         {
-            List<Container> result = new List<Container>();
-            foreach (Container container in containers.Where(x => x.Cooled && !x.Valueable).OrderBy(x => x.Weight).Reverse())
-            {
-                result.Add(container);
-            }
-            return result;
+            return containers.Where(x => x.Cooled && !x.Valuable).OrderBy(x => x.Weight).Reverse().ToList();
         }
 
         private List<Container> GetAllValueableAndCooledContainers()
         {
-            List<Container> result = new List<Container>();
-            foreach (Container container in containers.Where(x => x.Valueable && x.Cooled).OrderBy(x => x.Weight).Reverse())
-            {
-                result.Add(container);
-            }
-            return result;
+            return containers.Where(x => x.Valuable && x.Cooled).OrderBy(x => x.Weight).Reverse().ToList();
         }
 
         private List<Container> normalContainers;
         private List<Container> cooledContainers;
         private List<Container> valueableContainers;
         private List<Container> cooledAndValueableContainers;
+
         private int totalcontainersToDistrubute()
         {
                 return normalContainers.Count +
@@ -182,90 +138,62 @@ namespace ContainerVervoer
             List<Container> cooledContainers = GetAllCooledContainers();
             List<Container> valueableContainers = GetAllValueableContainers();
             List<Container> cooledAndValueableContainers = GetAllValueableAndCooledContainers();
-            //todo fillship hier ofzo? even kijken
-
+            int index = -1;
+            while (totalcontainersToDistrubute()>0)
+            {
+                index++;
+                layers.Add(new Layer(this.length));
+                fillLayer(index);
+            }
         }
 
-        private void fillShip()
+        private void fillLayer(int index)
         {
-            layers = 0;
-            while (totalcontainersToDistrubute() > 0) //TODO maybe implement detectie voor laatste laag hier?
+            
+            for (int collumn = 0; collumn < 12; collumn++) //todo maak logische for die over de collum looped
             {
-                for (int row = 0; row < shipLayout[layers].Count - 1; row++)
+                if (collumn == 0)
                 {
-                    for (int collum = 0; collum < shipLayout[layers][row].Count - 1; collum++)
-                    {
-                        if(CheckForFrontOrBackPosition(collum,row))
-                        {
-                            AddContainerToFrontOrBack(row);
-                        }
-                        else
-                        {
-                            AddContainerToNonFrontOrBack(row);
-                        }
-                    }
-                }
-                if (false) //TODO statement to check if adding is even possible cuz cooled stuff 
-                {
-                    layers++;
-                    shipLayout.Add(new List<List<Container>>());
+                    fillFirstCollumn();
                 }
                 else
                 {
-                    return;
+                    fillCollums();
                 }
             }
         }
 
-    
-        private bool CheckForFrontOrBackPosition(int collum, int row)
+        private void fillFirstCollumn()
         {
-            if (collum == 0 || collum == length - 1)
+            if (normalContainers.Count + cooledContainers.Count > 0)
             {
-                return true;
-            }
-            return false;
-        }
-
-        private bool AddContainerToFrontOrBack(int row)
-        {
-            if (cooledContainers.Count > 0)
-            {
-                shipLayout[layers][row].Add(cooledContainers[0]);
-                cooledContainers.RemoveAt(0);
-            }
-            else if (normalContainers.Count > 0)
-            {
-                //todo CHECK voor gewicht onder? gelimiteerd door inputs?
-                shipLayout[layers][row].Add(normalContainers[0]);
-                normalContainers.RemoveAt(0);
-            }
-            else if (cooledAndValueableContainers.Count > 0)
-            {
-                //todo check voor bovenste laag en plek naast 
-            }
-            else if (valueableContainers.Count > 0)
-            {
-                //todo check voor bovenste laag
+                if (cooledContainers.Count > 0)
+                {
+                    PlaceCooled();
+                }
+                else if (normalContainers.Count > 0)
+                {
+                    PlaceNormal();
+                }
             }
         }
 
-        private bool AddContainerToNonFrontOrBack(int row)
+        private void fillCollums()
         {
-            if (normalContainers.Count > 0)
-            {
-                //todo CHECK voor gewicht onder? gelimiteerd door inputs?
-                shipLayout[layers][row].Add(normalContainers[0]);
-                normalContainers.RemoveAt(0);
-            }
-            else if (cooledAndValueableContainers.Count > 0)
-            {
-                //todo check voor bovenste laag en plek naast 
-            }
-            else if (valueableContainers.Count > 0)
-            {
-                //todo check voor bovenste laag
-            }
+
         }
+        private void PlaceCooled()
+        {
+            weightLeft++;
+            weightRight++;
+        }
+
+        private void PlaceNormal()
+        {
+            weightLeft++;
+            weightRight++;
+        }
+
+   
     }
 }
