@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing.Text;
 using System.Linq;
 using System.Runtime.ExceptionServices;
 using System.Text;
@@ -10,6 +11,7 @@ namespace ContainerVervoer
 {
     public class Ship
     {
+        #region Fields
         private int length;
         private int width;
         private int heigth;
@@ -25,7 +27,9 @@ namespace ContainerVervoer
 
         private int amountValueable = 0;
         private int maxValueables = 0;
+        #endregion
 
+        #region Properties
         public int Length => length;
         public int Width => width;
         public int Heigth => heigth;
@@ -35,8 +39,8 @@ namespace ContainerVervoer
         public int WeightLeft => weightLeft;
         public int WeightRight => weightRight;
         public List<Container> Containers => containers;
+        #endregion
    
-
         public Ship(int width, int length)
         {
             containers = new List<Container>();
@@ -164,6 +168,13 @@ namespace ContainerVervoer
         private List<Container> cooledContainers;
         private List<Container> valueableContainers;
         private List<Container> cooledAndValueableContainers;
+        private int totalcontainersToDistrubute()
+        {
+                return normalContainers.Count +
+                       cooledContainers.Count +
+                       valueableContainers.Count +
+                       cooledAndValueableContainers.Count;
+        }
 
         public void PlaceContainersInShip()
         {
@@ -178,53 +189,19 @@ namespace ContainerVervoer
         private void fillShip()
         {
             layers = 0;
-            while (normalContainers.Count + 
-                   cooledContainers.Count + 
-                   valueableContainers.Count +
-                   cooledAndValueableContainers.Count > 0) //TODO maybe implement detectie voor laatste laag hier?
+            while (totalcontainersToDistrubute() > 0) //TODO maybe implement detectie voor laatste laag hier?
             {
                 for (int row = 0; row < shipLayout[layers].Count - 1; row++)
                 {
-                    for (int collum = 0; collum < shipLayout[layers][row].Count - 1; collum++) 
+                    for (int collum = 0; collum < shipLayout[layers][row].Count - 1; collum++)
                     {
-                        if (row == 0 || row == length - 1) 
+                        if(CheckForFrontOrBackPosition(collum,row))
                         {
-                            if (cooledContainers.Count > 0)
-                            {
-                                shipLayout[layers][row].Add(cooledContainers[0]);
-                                cooledContainers.RemoveAt(0);
-                            }
-                            else if (normalContainers.Count > 0)
-                            {
-                                //todo CHECK voor gewicht onder? gelimiteerd door inputs?
-                                shipLayout[layers][row].Add(normalContainers[0]);
-                                normalContainers.RemoveAt(0);
-                            }
-                            else if (cooledAndValueableContainers.Count > 0)
-                            {
-                                //todo check voor bovenste laag en plek naast 
-                            }
-                            else if (valueableContainers.Count > 0)
-                            {
-                                //todo check voor bovenste laag
-                            }
+                            AddContainerToFrontOrBack(row);
                         }
                         else
                         {
-                            if (normalContainers.Count > 0)
-                            {
-                                //todo CHECK voor gewicht onder? gelimiteerd door inputs?
-                                shipLayout[layers][row].Add(normalContainers[0]);
-                                normalContainers.RemoveAt(0);
-                            }
-                            else if (cooledAndValueableContainers.Count > 0)
-                            {
-                                //todo check voor bovenste laag en plek naast 
-                            }
-                            else if (valueableContainers.Count > 0)
-                            {
-                                //todo check voor bovenste laag
-                            }
+                            AddContainerToNonFrontOrBack(row);
                         }
                     }
                 }
@@ -237,6 +214,57 @@ namespace ContainerVervoer
                 {
                     return;
                 }
+            }
+        }
+
+    
+        private bool CheckForFrontOrBackPosition(int collum, int row)
+        {
+            if (collum == 0 || collum == length - 1)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private bool AddContainerToFrontOrBack(int row)
+        {
+            if (cooledContainers.Count > 0)
+            {
+                shipLayout[layers][row].Add(cooledContainers[0]);
+                cooledContainers.RemoveAt(0);
+            }
+            else if (normalContainers.Count > 0)
+            {
+                //todo CHECK voor gewicht onder? gelimiteerd door inputs?
+                shipLayout[layers][row].Add(normalContainers[0]);
+                normalContainers.RemoveAt(0);
+            }
+            else if (cooledAndValueableContainers.Count > 0)
+            {
+                //todo check voor bovenste laag en plek naast 
+            }
+            else if (valueableContainers.Count > 0)
+            {
+                //todo check voor bovenste laag
+            }
+        }
+
+        private bool AddContainerToNonFrontOrBack(int row)
+        {
+            if (normalContainers.Count > 0)
+            {
+                //todo CHECK voor gewicht onder? gelimiteerd door inputs?
+                shipLayout[layers][row].Add(normalContainers[0]);
+                normalContainers.RemoveAt(0);
+            }
+            else if (cooledAndValueableContainers.Count > 0)
+            {
+                //todo check voor bovenste laag en plek naast 
+            }
+            else if (valueableContainers.Count > 0)
+            {
+                //todo check voor bovenste laag
             }
         }
     }
