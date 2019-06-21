@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using ContainerVervoer.Enums;
 
 namespace ContainerVervoer.Classes
@@ -81,7 +82,6 @@ namespace ContainerVervoer.Classes
         public bool CheckWeight()
         {
             int totalWeight = 0;
-            int weightToCheck = maxWeight / 2;
 
             foreach (Container container in Containers)
             {
@@ -272,19 +272,53 @@ namespace ContainerVervoer.Classes
         private bool CheckIfContainerIsPlaceableBasedOnValuable(Container container, int layer, int column, int row)
         {
             bool result = true;
-            if (layer > 0)
+            if (row > 0) //it can always be placed on first row 
             {
-                 //TODO FIX DIT
+                Container containerInFront;
+                Container containerInFrontOfInFront;
+                if (CheckIfContainerIsPlaced(layer,column - 1, row)) //check if there is container in front of the container.
+                {
+                    containerInFront = layers[layer].LayerLayout[column - 1][row].Container;
+                    if (CheckIfContainerIsPlaced(layer, column + 1, row))
+                    {
+                        return false;
+                        //check if there is container behind the container
+                    }
+                    if (CheckIfContainerIsPlaced(layer,column - 2, row) && containerInFront.Valuable && column > 1) //check if there is container 2 rows in front so it doesn't block the first container
+                    {
+                        containerInFrontOfInFront = layers[layer].LayerLayout[column - 2][row].Container;
+                        if (containerInFrontOfInFront.Valuable)
+                        {
+                            return false;
+                        }
+                    }
+                }
             }
             return result;
         }
 
+
+        private bool CheckIfContainerIsPlaced(int layer,int column, int row)
+        {
+            if (layers[layer].LayerLayout[column][row].Container != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private bool? IsContainerInFrontValuable(int column, int row)
+        {
+            return null;
+        }
+
+
         private bool CheckIfContainerIsPlaceableBasedOnCooled(Container container, int layer, int column, int row)
         {
             bool result = true;
-            if (layer > 0) 
+            if (row == 0) // TODO dit is een dubbele check? sneller maar minder leesbaar als in FillCollum; Vraag mening tim
             {
-               //TODO FIX DIT
+                return true;
             }
             return result;
         }
