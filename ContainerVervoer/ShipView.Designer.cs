@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.shipGrid = new System.Windows.Forms.DataGridView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label1 = new System.Windows.Forms.Label();
             this.layersBox = new System.Windows.Forms.ComboBox();
@@ -43,6 +43,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.clearAllContainer = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.containerValueable = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -53,8 +54,7 @@
             this.removeBtn = new System.Windows.Forms.Button();
             this.generateContainersBtn = new System.Windows.Forms.Button();
             this.containerListBox = new System.Windows.Forms.ListBox();
-            this.clearAllContainer = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.shipGrid)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -63,22 +63,22 @@
             ((System.ComponentModel.ISupportInitialize)(this.containersAmountInput)).BeginInit();
             this.SuspendLayout();
             // 
-            // dataGridView1
+            // shipGrid
             // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(15, 81);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(754, 513);
-            this.dataGridView1.TabIndex = 0;
+            this.shipGrid.AllowUserToAddRows = false;
+            this.shipGrid.AllowUserToDeleteRows = false;
+            this.shipGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.shipGrid.Location = new System.Drawing.Point(15, 81);
+            this.shipGrid.Name = "shipGrid";
+            this.shipGrid.ReadOnly = true;
+            this.shipGrid.Size = new System.Drawing.Size(754, 513);
+            this.shipGrid.TabIndex = 0;
             // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.layersBox);
-            this.groupBox1.Controls.Add(this.dataGridView1);
+            this.groupBox1.Controls.Add(this.shipGrid);
             this.groupBox1.Location = new System.Drawing.Point(485, 0);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(792, 614);
@@ -104,6 +104,7 @@
             this.layersBox.Name = "layersBox";
             this.layersBox.Size = new System.Drawing.Size(121, 21);
             this.layersBox.TabIndex = 24;
+            this.layersBox.SelectedIndexChanged += new System.EventHandler(this.layersBox_SelectedIndexChanged);
             // 
             // groupBox2
             // 
@@ -220,6 +221,17 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Containers";
             // 
+            // clearAllContainer
+            // 
+            this.clearAllContainer.Cursor = System.Windows.Forms.Cursors.Default;
+            this.clearAllContainer.Location = new System.Drawing.Point(108, 307);
+            this.clearAllContainer.Name = "clearAllContainer";
+            this.clearAllContainer.Size = new System.Drawing.Size(75, 23);
+            this.clearAllContainer.TabIndex = 28;
+            this.clearAllContainer.Text = "Clear All";
+            this.clearAllContainer.UseVisualStyleBackColor = true;
+            this.clearAllContainer.Click += new System.EventHandler(this.clearAllContainer_Click);
+            // 
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.containerValueable);
@@ -239,9 +251,9 @@
             this.containerValueable.AutoSize = true;
             this.containerValueable.Location = new System.Drawing.Point(16, 19);
             this.containerValueable.Name = "containerValueable";
-            this.containerValueable.Size = new System.Drawing.Size(73, 17);
+            this.containerValueable.Size = new System.Drawing.Size(67, 17);
             this.containerValueable.TabIndex = 25;
-            this.containerValueable.Text = "Valueable";
+            this.containerValueable.Text = "Valuable";
             this.containerValueable.UseVisualStyleBackColor = true;
             // 
             // label4
@@ -333,17 +345,6 @@
             this.containerListBox.Size = new System.Drawing.Size(437, 251);
             this.containerListBox.TabIndex = 0;
             // 
-            // clearAllContainer
-            // 
-            this.clearAllContainer.Cursor = System.Windows.Forms.Cursors.Default;
-            this.clearAllContainer.Location = new System.Drawing.Point(108, 307);
-            this.clearAllContainer.Name = "clearAllContainer";
-            this.clearAllContainer.Size = new System.Drawing.Size(75, 23);
-            this.clearAllContainer.TabIndex = 28;
-            this.clearAllContainer.Text = "Clear All";
-            this.clearAllContainer.UseVisualStyleBackColor = true;
-            this.clearAllContainer.Click += new System.EventHandler(this.clearAllContainer_Click);
-            // 
             // ShipView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -354,7 +355,7 @@
             this.Controls.Add(this.groupBox1);
             this.Name = "ShipView";
             this.Text = "SchipView";
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.shipGrid)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -370,7 +371,7 @@
 
         #endregion
 
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView shipGrid;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox3;

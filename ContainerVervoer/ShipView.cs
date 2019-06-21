@@ -7,6 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ContainerVervoer.Classes;
+using ContainerVervoer.Enums;
+using Container = ContainerVervoer.Classes.Container;
 
 namespace ContainerVervoer
 {
@@ -35,7 +38,7 @@ namespace ContainerVervoer
         {
             
             Container containerToAdd = new Container(Convert.ToInt32(containerWeight.Text), containerValueable.Checked, containerCooled.Checked);
-            ErrorMessage result = ship.addContainer(containerToAdd);
+            ErrorMessage result = ship.AddContainer(containerToAdd);
             if (result != ErrorMessage.Succes)
             {
                 if (result == ErrorMessage.TooHeavy)
@@ -50,23 +53,55 @@ namespace ContainerVervoer
 
         private void sortBtn_Click(object sender, EventArgs e)
         {
-            if (!ship.checkWeight())
+            if (!ship.CheckWeight())
             {
-                int containerTotalWeight = 0;
-                foreach (Container container in ship.Containers)
-                {
-                    containerTotalWeight += container.Weight;
-                }
-                int weightToAdd = (ship.MaxWeight / 2) - containerTotalWeight; 
+                int weightToAdd = (ship.MaxWeight / 2) - GetTotalWeight(); 
                 MessageBox.Show($"Not enough weight, add {weightToAdd} weight"); //TODO check dis
                 return;
             }
             layersBox.Items.Clear();
             ship.PlaceContainersInShip();
-            /*for (int i = 0; i < 12; i++)
+            GenerateLayersCombobox();
+            layersBox.SelectedIndex = 0;
+            FillDataGrid(0);
+            
+
+        }
+
+        private void FillDataGrid(int layer)
+        {
+            layer += 1;
+            int length = ship.Layers[layer].LayerLayout[0].Count;
+            int width = ship.Layers[layer].LayerLayout.Count;
+            this.shipGrid.ColumnCount = width;
+            for (int r = 0; r < length; r++)
             {
-                layersBox.Items.Add(i); //TODO add total layers here
-            }*/
+                DataGridViewRow row = new DataGridViewRow();
+                row.CreateCells(this.shipGrid);
+                for (int c = 0; c < width; c++)
+                {
+                    row.Cells[c].Value = ship.Layers[layer].LayerLayout[r][c].ToString();
+                }
+                this.shipGrid.Rows.Add(row);
+            }
+        }
+
+        private int GetTotalWeight()
+        {
+            int containerTotalWeight = 0;
+            foreach (Container container in ship.Containers)
+            {
+                containerTotalWeight += container.Weight;
+            }
+            return containerTotalWeight;
+        }
+
+        private void GenerateLayersCombobox()
+        {
+            for (int i = 0; i < ship.Layers.Count; i++)
+            {
+                layersBox.Items.Add(i + 1); //TODO add total layers here
+            }
         }
 
         private void removeBtn_Click(object sender, EventArgs e)
@@ -75,7 +110,7 @@ namespace ContainerVervoer
             if (index > -1 )
             {
                 containerListBox.Items.RemoveAt(index);
-                ship.removeContainer(index);
+                ship.RemoveContainer(index);
             }
             else
             {
@@ -85,8 +120,17 @@ namespace ContainerVervoer
 
         private void clearAllContainer_Click(object sender, EventArgs e)
         {
-            ship.removeAllContainers();
+            ship.RemoveAllContainers();
             containerListBox.Items.Clear();
+        }
+
+        private void layersBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int selectedIndex = layersBox.SelectedIndex;
+            if (selectedIndex > -1)
+            {
+                FillDataGrid(selectedIndex);
+            }
         }
     }
 }

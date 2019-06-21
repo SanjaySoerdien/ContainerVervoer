@@ -52,17 +52,18 @@
     <Compile Include="AddContainer.Designer.cs">
       <DependentUpon>AddContainer.cs</DependentUpon>
     </Compile>
-    <Compile Include="Container.cs" />
-    <Compile Include="ErrorMessage.cs" />
-    <Compile Include="Layer.cs" />
-    <Compile Include="Ship.cs" />
+    <Compile Include="Enums\Position.cs" />
+    <Compile Include="Classes\Container.cs" />
+    <Compile Include="Enums\ErrorMessage.cs" />
+    <Compile Include="Classes\Layer.cs" />
+    <Compile Include="Classes\Ship.cs" />
     <Compile Include="ShipView.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ShipView.Designer.cs">
       <DependentUpon>ShipView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Space.cs" />
+    <Compile Include="Classes\Space.cs" />
     <Compile Include="StartForm.cs">
       <SubType>Form</SubType>
     </Compile>

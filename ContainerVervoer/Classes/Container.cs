@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ContainerVervoer
+﻿namespace ContainerVervoer.Classes
 {
     public class Container
     {
@@ -31,7 +25,7 @@ namespace ContainerVervoer
         {
             if (cooled && valuable)
             {
-                return $"Cooled & valueable Container \n Weight:{weight}kg";
+                return $"Cooled & Valuable Container \n Weight:{weight}kg";
 
             }
             else if(cooled)
