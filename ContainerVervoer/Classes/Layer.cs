@@ -40,7 +40,6 @@ namespace ContainerVervoer.Classes
         public Space GetSpace(int column, int row) //TODO use this one more
         {
             return layerLayout[column][row];
-
         }
 }
 }

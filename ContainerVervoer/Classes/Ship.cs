@@ -20,6 +20,7 @@ namespace ContainerVervoer.Classes
 
         private readonly List<Container> containers;
         private readonly List<Layer> layers;
+        private ShipMath shipMath;
         #endregion
 
         #region Properties
@@ -42,6 +43,7 @@ namespace ContainerVervoer.Classes
             this.width = width;
             maxWeight = length * width * 150000;
             layers = new List<Layer>();
+            shipMath = new ShipMath();
             layers.Add(new Layer(this.length, width));
         }
 
@@ -93,6 +95,17 @@ namespace ContainerVervoer.Classes
                 return false;
             }
             return true;
+        }
+
+        public void AddWeight(Space space, Container container)
+        {
+            currentWeight += container.Weight;
+            if (space.Position == Positon.Left)
+            {
+                weightLeft += container.Weight;
+                return;
+            }
+            weightRight += container.Weight;
         }
 
         #region Algortihm
@@ -205,8 +218,8 @@ namespace ContainerVervoer.Classes
                 }
                 if (TotalcontainersToDistrubute()< TotalcontainersToDistrubute()) //TODO dit aanpassen , suggeties Tim?
                 {
-                    return false;
                     layers.RemoveAt(layer);
+                    return false;
                 }
             }
             return true;
@@ -216,7 +229,7 @@ namespace ContainerVervoer.Classes
         {
             for (int i = 0; i < length - 1; i++)
             {
-                int row = GenerateRowNr(i);
+                int row = shipMath.GenerateRowNr(i,length);
                 if (normalContainers.Count + cooledContainers.Count > 0)
                 {
                     if (cooledContainers.Count > 0)
@@ -243,7 +256,7 @@ namespace ContainerVervoer.Classes
         {
             for (int i = 0; i < length - 1; i++)
             {
-                int row = GenerateRowNr(i);
+                int row = shipMath.GenerateRowNr(i,length-1);
                 if (normalContainers.Count > 0)
                 {
                     PlaceNormalContainer(layer, column, row);
@@ -289,7 +302,7 @@ namespace ContainerVervoer.Classes
 
         private Placeability CheckIfContainerIsPlaceable(Container container, int layer, int column, int row)
         {
-            Placeability result = Placeability.Placeable;
+            Placeability result = Placeability.Placeable; //TODO check dit
             result = CheckIfContainerIsPlaceableBasedOnWeight(container, layer, column, row);
             if (result == Placeability.Placeable)
             {
@@ -323,7 +336,6 @@ namespace ContainerVervoer.Classes
 
         private Placeability CheckIfContainerIsOnTopOfValuable(int layer, int column, int row)
         {
-
             if (layer > 0)
             {
                 Space spaceUnder = layers[layer - 1].GetSpace(column, row);
@@ -406,7 +418,6 @@ namespace ContainerVervoer.Classes
             return Placeability.Placeable;
         }
 
-
         private List<Container> PlaceContainer(List<Container> containerList, int layer, int column, int row)
         {
             Container containerToAdd = containerList[0];
@@ -422,44 +433,6 @@ namespace ContainerVervoer.Classes
             AddWeight(spaceToAdd, containerToAdd);
             containerList.RemoveAt(0);
             return containerList;
-        }
-
-        private void AddWeight(Space space, Container container)
-        {
-            currentWeight += container.Weight;
-            if (space.Position == Positon.Left)
-            {
-                weightLeft += container.Weight;
-                return;
-            }
-            weightRight += container.Weight;
-        }
-
-        private int GenerateRowNr(int index)
-        {
-            if (index == 0)
-            {
-                return GetMiddle();
-            }
-            return IndexAlternator(index);
-
-        }
-        private int IndexAlternator(int index)
-        {
-            if (index % 2 == 0)
-            {
-                return index;
-            }
-            return -index;
-        }
-        private int GetMiddle()
-        {
-            double value = Convert.ToDouble(length);
-            if (length % 2 == 0)
-            {
-                return length / 2;
-            }
-            return (int)(value / 2 + 0.5);
         }
         #endregion
         #endregion
