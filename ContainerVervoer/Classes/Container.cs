@@ -14,13 +14,16 @@
         public bool Cooled => cooled;
         #endregion
 
+        #region Constuctor
         public Container(int weight, bool valuable, bool cooled)
         {
             this.weight = weight;
             this.valuable = valuable;
             this.cooled = cooled;
         }
+        #endregion
 
+        #region Methods
         public override string ToString()
         {
             if (cooled && valuable)
@@ -38,7 +41,6 @@
             }
             return $"Container \t \t \n Weight:{weight}kg";
         }
-
-      
+        #endregion
     }
 }

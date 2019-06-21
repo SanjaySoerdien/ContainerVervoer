@@ -15,36 +15,49 @@ namespace ContainerVervoer
         public StartForm()
         {
             InitializeComponent();
+            openQuickNewForm();
         }
 
         private void GoBtn_Click(object sender, EventArgs e)
         {
             int width = -1;
             int length = -1;
-            //try
-            //{
+            try
+            {
                 width = Convert.ToInt32(widthBox.Text);
                 length = Convert.ToInt32(lengthBox.Text);
                 if (width <= 0 || length <= 0)
                 {
                     throw new Exception("Insert values higher than 0!");
-       
                 }
                 else if (width > length)
                 {
-                    return; //delete dit als je exeptions er weer in gooit
                     throw new Exception("Insert higher length then width");
                 }
-                ShipView view = new ShipView(width,length);
-                this.Hide();          
-                view.ShowDialog();     
-                this.Show();
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show(ex.Message);
-            //}
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return;
+            }
+
+            openNewForm(width, length);
         }
 
+        private void openNewForm(int width, int length)
+        {
+            ShipView view = new ShipView(width, length);
+            this.Hide();
+            view.ShowDialog();
+            this.Show();
+        }
+
+        private void openQuickNewForm()
+        {
+            ShipView view = new ShipView(5, 10);
+            this.Hide();
+            view.ShowDialog();
+            this.Show();
+        }
     }
 }

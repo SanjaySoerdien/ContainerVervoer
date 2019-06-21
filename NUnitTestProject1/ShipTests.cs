@@ -26,7 +26,6 @@ namespace ContainerTests
         [Test]
         public void FillAll()
         {
-            var result = ship2.PlaceContainersInShip();
 
             //Assert.That(result, Is.);
             Assert.Pass();

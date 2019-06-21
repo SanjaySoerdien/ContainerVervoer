@@ -21,6 +21,7 @@ namespace ContainerVervoer
             ship = new Ship(width,length);
             InitializeComponent();
             shipMaxWeigthLbl.Text = ship.MaxWeight.ToString();
+            ship.GenerateRandomContainers(500); // TODO Delete deze
         }
 
         private void generateContainersBtn_Click(object sender, EventArgs e)
@@ -29,15 +30,12 @@ namespace ContainerVervoer
             {
                 ship.GenerateRandomContainers(result);
             }
-            //containerListBox.DataSource = ship.Containers;
             containerListBox.Items.Clear();
             containerListBox.Items.AddRange(ship.Containers.ToArray());
-            // containerListBox.Items.Add(ship.Containers[0].ToString());
         }
 
         private void addBtn_Click(object sender, EventArgs e)
         {
-            
             Container containerToAdd = new Container(Convert.ToInt32(containerWeight.Text), containerValueable.Checked, containerCooled.Checked);
             Status result = ship.AddContainer(containerToAdd);
             if (result != Status.Succes)
@@ -60,28 +58,28 @@ namespace ContainerVervoer
                 MessageBox.Show($"Not enough weight, add {weightToAdd} weight"); 
                 return;
             }
-            Status[] result = ship.PlaceContainersInShip();
-            FillDataGrid(1);
-            //ShowResult(result);
+            List<Status> result = ship.ExecuteAlgoritm();
+            FillDataGrid(0,ship.Length-1,ship.Width-1);
+            ShowResult(result);
+            UpdateView();
         }
 
 
-        private void ShowResult(Status[] result)
+        private void ShowResult(List<Status> statusesObtained)
         {
-            if (result.Contains(Status.Succes))
+            if (statusesObtained.Contains(Status.Succes))
             {
                 MessageBox.Show("Succefully completed algoritm");
             }
             else
             {
                 containerListBox.Items.Clear();
-                foreach (Status status in result)
+                foreach (Status status in statusesObtained)
                 {
                     containerListBox.Items.Add(status.ToString());
                 }
             }
         }
-        
         
         private void UpdateView()
         {
@@ -94,18 +92,21 @@ namespace ContainerVervoer
             balanceLbl.Text = ship.Balance.ToString();
         }
 
-        private void FillDataGrid(int layer)
+        private void FillDataGrid(int layer,int length , int width)
         {
-            int layerIndex = layer - 1;
-            for (int row = 0; row < ship.Length; row++)
+            /*for (int i = 0; i < length; i++)
             {
-                DataGridViewRow cellRow = new DataGridViewRow();
-                cellRow.CreateCells(this.shipGrid); //TODO eventueel buiten de if?
-                for (int column = 0; column < ship.Width; column++)
+                string column = string.Format("Column{0}", i + 1);
+                shipGrid.Columns.Add(column, column);
+            }*/
+            for (int column = 0; column < length; column++)
+            {
+                DataGridViewRow cellRow = new DataGridViewRow(); 
+                for (int row = 0; row < width; row++)
                 {
-                    cellRow.Cells[column].Value = ship.Layers[layerIndex].LayerLayout[row][column].ToString();
+                    cellRow.Cells[column].Value = ship.Layers[layer].LayerLayout[column][row]; 
                 }
-                this.shipGrid.Rows.Add(row);
+                shipGrid.Rows.Add(cellRow);
             }
         }
 
@@ -151,7 +152,7 @@ namespace ContainerVervoer
         {
             if (int.TryParse(layersBox.Text, out int selectedIndex))
             {
-                FillDataGrid(selectedIndex);
+                FillDataGrid(selectedIndex - 1,ship.Length-1,ship.Width-1);
             }
             else
             {

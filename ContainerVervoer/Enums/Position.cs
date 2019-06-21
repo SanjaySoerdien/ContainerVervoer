@@ -3,6 +3,7 @@
     public enum Positon
     {
         Left,
+        Middle,
         Right
     }
 }

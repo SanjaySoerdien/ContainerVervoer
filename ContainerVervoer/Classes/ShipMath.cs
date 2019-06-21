@@ -9,16 +9,17 @@ namespace ContainerVervoer.Classes
 {
     public class ShipMath
     {
-        public int GenerateRowNr(int index,int length)
+        #region Methods
+        public int GenerateRowNr(int index,int width)
         {
             if (index == 0)
             {
-                return GetMiddle(length);
+                return GetMiddle(width);
             }
-            return IndexAlternator(index, length);
+            return IndexAlternator(index, width);
         }
 
-        public int IndexAlternator(int index,int length)
+        public int IndexAlternator(int index,int width)
         {
             double dividedNumber= index/2;
             if (index % 2 == 0)
@@ -27,16 +28,15 @@ namespace ContainerVervoer.Classes
             }
             else
             {
-                dividedNumber = (index / 2 + 0.5);
                 dividedNumber = Math.Round((double) index / 2, MidpointRounding.AwayFromZero);
             }
 
             if (index % 2 == 0)
             {
-                return GetMiddle(length) + (int)dividedNumber;
+                return GetMiddle(width) + (int)dividedNumber;
             }
 
-            return GetMiddle(length) - (int)dividedNumber;
+            return GetMiddle(width) - (int)dividedNumber;
         }
         public int GetMiddle(int length)
         {
@@ -47,5 +47,6 @@ namespace ContainerVervoer.Classes
             }
             return Convert.ToInt32((value / 2 )+ 0.5);
         }
+        #endregion
     }
 }

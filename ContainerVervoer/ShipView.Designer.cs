@@ -33,11 +33,18 @@
             this.label1 = new System.Windows.Forms.Label();
             this.layersBox = new System.Windows.Forms.ComboBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.sortBtn = new System.Windows.Forms.Button();
+            this.Balance = new System.Windows.Forms.GroupBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.weightRightLabel = new System.Windows.Forms.Label();
             this.shipUsedWeightLbl = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.shipMaxWeigthLbl = new System.Windows.Forms.Label();
+            this.weightLeftLbl = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
+            this.balanceLbl = new System.Windows.Forms.Label();
+            this.sortBtn = new System.Windows.Forms.Button();
             this.shipWidthLbl = new System.Windows.Forms.Label();
             this.shipLenghtLbl = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -55,21 +62,14 @@
             this.generateContainersBtn = new System.Windows.Forms.Button();
             this.containerListBox = new System.Windows.Forms.ListBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.balanceLbl = new System.Windows.Forms.Label();
-            this.weightLeftLbl = new System.Windows.Forms.Label();
-            this.weightRightLabel = new System.Windows.Forms.Label();
-            this.Balance = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.shipGrid)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.Balance.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.containerWeight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.containersAmountInput)).BeginInit();
-            this.Balance.SuspendLayout();
             this.SuspendLayout();
             // 
             // shipGrid
@@ -130,15 +130,42 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Ship info";
             // 
-            // sortBtn
+            // Balance
             // 
-            this.sortBtn.Location = new System.Drawing.Point(29, 183);
-            this.sortBtn.Name = "sortBtn";
-            this.sortBtn.Size = new System.Drawing.Size(154, 23);
-            this.sortBtn.TabIndex = 1;
-            this.sortBtn.Text = "Sort";
-            this.sortBtn.UseVisualStyleBackColor = true;
-            this.sortBtn.Click += new System.EventHandler(this.sortBtn_Click);
+            this.Balance.Controls.Add(this.label10);
+            this.Balance.Controls.Add(this.weightRightLabel);
+            this.Balance.Controls.Add(this.shipUsedWeightLbl);
+            this.Balance.Controls.Add(this.label6);
+            this.Balance.Controls.Add(this.shipMaxWeigthLbl);
+            this.Balance.Controls.Add(this.weightLeftLbl);
+            this.Balance.Controls.Add(this.label8);
+            this.Balance.Controls.Add(this.label9);
+            this.Balance.Controls.Add(this.label7);
+            this.Balance.Controls.Add(this.balanceLbl);
+            this.Balance.Location = new System.Drawing.Point(210, 14);
+            this.Balance.Name = "Balance";
+            this.Balance.Size = new System.Drawing.Size(251, 181);
+            this.Balance.TabIndex = 26;
+            this.Balance.TabStop = false;
+            this.Balance.Text = "Balance ";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(16, 16);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(68, 13);
+            this.label10.TabIndex = 22;
+            this.label10.Text = "Weight Left: ";
+            // 
+            // weightRightLabel
+            // 
+            this.weightRightLabel.AutoSize = true;
+            this.weightRightLabel.Location = new System.Drawing.Point(129, 40);
+            this.weightRightLabel.Name = "weightRightLabel";
+            this.weightRightLabel.Size = new System.Drawing.Size(45, 13);
+            this.weightRightLabel.TabIndex = 25;
+            this.weightRightLabel.Text = "Sort first";
             // 
             // shipUsedWeightLbl
             // 
@@ -149,6 +176,15 @@
             this.shipUsedWeightLbl.TabIndex = 19;
             this.shipUsedWeightLbl.Text = "Sort first";
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(16, 78);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(52, 13);
+            this.label6.TabIndex = 20;
+            this.label6.Text = "Balance: ";
+            // 
             // shipMaxWeigthLbl
             // 
             this.shipMaxWeigthLbl.AutoSize = true;
@@ -157,6 +193,15 @@
             this.shipMaxWeigthLbl.Size = new System.Drawing.Size(13, 13);
             this.shipMaxWeigthLbl.TabIndex = 18;
             this.shipMaxWeigthLbl.Text = "0";
+            // 
+            // weightLeftLbl
+            // 
+            this.weightLeftLbl.AutoSize = true;
+            this.weightLeftLbl.Location = new System.Drawing.Point(129, 16);
+            this.weightLeftLbl.Name = "weightLeftLbl";
+            this.weightLeftLbl.Size = new System.Drawing.Size(45, 13);
+            this.weightLeftLbl.TabIndex = 24;
+            this.weightLeftLbl.Text = "Sort first";
             // 
             // label8
             // 
@@ -167,6 +212,15 @@
             this.label8.TabIndex = 17;
             this.label8.Text = "Used weight:";
             // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(16, 40);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(72, 13);
+            this.label9.TabIndex = 21;
+            this.label9.Text = "Weight Right:";
+            // 
             // label7
             // 
             this.label7.AutoSize = true;
@@ -175,6 +229,25 @@
             this.label7.Size = new System.Drawing.Size(64, 13);
             this.label7.TabIndex = 16;
             this.label7.Text = "Max weight:";
+            // 
+            // balanceLbl
+            // 
+            this.balanceLbl.AutoSize = true;
+            this.balanceLbl.Location = new System.Drawing.Point(129, 78);
+            this.balanceLbl.Name = "balanceLbl";
+            this.balanceLbl.Size = new System.Drawing.Size(45, 13);
+            this.balanceLbl.TabIndex = 23;
+            this.balanceLbl.Text = "Sort first";
+            // 
+            // sortBtn
+            // 
+            this.sortBtn.Location = new System.Drawing.Point(29, 183);
+            this.sortBtn.Name = "sortBtn";
+            this.sortBtn.Size = new System.Drawing.Size(154, 23);
+            this.sortBtn.TabIndex = 1;
+            this.sortBtn.Text = "Sort";
+            this.sortBtn.UseVisualStyleBackColor = true;
+            this.sortBtn.Click += new System.EventHandler(this.sortBtn_Click);
             // 
             // shipWidthLbl
             // 
@@ -316,9 +389,19 @@
             // containersAmountInput
             // 
             this.containersAmountInput.Location = new System.Drawing.Point(141, 360);
+            this.containersAmountInput.Maximum = new decimal(new int[] {
+            700,
+            0,
+            0,
+            0});
             this.containersAmountInput.Name = "containersAmountInput";
             this.containersAmountInput.Size = new System.Drawing.Size(45, 20);
             this.containersAmountInput.TabIndex = 23;
+            this.containersAmountInput.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
             // 
             // removeBtn
             // 
@@ -360,79 +443,6 @@
             this.label5.TabIndex = 4;
             this.label5.Text = "label5";
             // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(16, 78);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(52, 13);
-            this.label6.TabIndex = 20;
-            this.label6.Text = "Balance: ";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(16, 40);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(72, 13);
-            this.label9.TabIndex = 21;
-            this.label9.Text = "Weight Right:";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(16, 16);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(68, 13);
-            this.label10.TabIndex = 22;
-            this.label10.Text = "Weight Left: ";
-            // 
-            // balanceLbl
-            // 
-            this.balanceLbl.AutoSize = true;
-            this.balanceLbl.Location = new System.Drawing.Point(129, 78);
-            this.balanceLbl.Name = "balanceLbl";
-            this.balanceLbl.Size = new System.Drawing.Size(45, 13);
-            this.balanceLbl.TabIndex = 23;
-            this.balanceLbl.Text = "Sort first";
-            // 
-            // weightLeftLbl
-            // 
-            this.weightLeftLbl.AutoSize = true;
-            this.weightLeftLbl.Location = new System.Drawing.Point(129, 16);
-            this.weightLeftLbl.Name = "weightLeftLbl";
-            this.weightLeftLbl.Size = new System.Drawing.Size(45, 13);
-            this.weightLeftLbl.TabIndex = 24;
-            this.weightLeftLbl.Text = "Sort first";
-            // 
-            // weightRightLabel
-            // 
-            this.weightRightLabel.AutoSize = true;
-            this.weightRightLabel.Location = new System.Drawing.Point(129, 40);
-            this.weightRightLabel.Name = "weightRightLabel";
-            this.weightRightLabel.Size = new System.Drawing.Size(45, 13);
-            this.weightRightLabel.TabIndex = 25;
-            this.weightRightLabel.Text = "Sort first";
-            // 
-            // Balance
-            // 
-            this.Balance.Controls.Add(this.label10);
-            this.Balance.Controls.Add(this.weightRightLabel);
-            this.Balance.Controls.Add(this.shipUsedWeightLbl);
-            this.Balance.Controls.Add(this.label6);
-            this.Balance.Controls.Add(this.shipMaxWeigthLbl);
-            this.Balance.Controls.Add(this.weightLeftLbl);
-            this.Balance.Controls.Add(this.label8);
-            this.Balance.Controls.Add(this.label9);
-            this.Balance.Controls.Add(this.label7);
-            this.Balance.Controls.Add(this.balanceLbl);
-            this.Balance.Location = new System.Drawing.Point(210, 14);
-            this.Balance.Name = "Balance";
-            this.Balance.Size = new System.Drawing.Size(251, 181);
-            this.Balance.TabIndex = 26;
-            this.Balance.TabStop = false;
-            this.Balance.Text = "Balance ";
-            // 
             // ShipView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -449,13 +459,13 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.Balance.ResumeLayout(false);
+            this.Balance.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.containerWeight)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.containersAmountInput)).EndInit();
-            this.Balance.ResumeLayout(false);
-            this.Balance.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

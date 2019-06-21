@@ -14,7 +14,6 @@ namespace NUnitTestProject1
         {
             ship=new Ship(12,14);
             ship.GenerateRandomContainers(500);
-            ship.
         }
 
         [Test]

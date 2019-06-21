@@ -2,7 +2,7 @@
 {
     public enum Placeability
     {
-        Placeable,
-        Unplaceable
+        Placeable ,
+        Unplaceable 
     }
 }
