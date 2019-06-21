@@ -18,28 +18,28 @@ namespace NUnitTestProject1
         [Test]
         public void GenerateRowNrEven_index0width20_returnMiddle10()
         {
-            int result = shipMath.GenerateRowNr(0, 20);
+            var result = shipMath.GenerateRowNr(0, 20);
             Assert.That(result,Is.EqualTo(10));
         }
 
         [Test]
         public void GenerateRowNrEven_index4width20_return12()
         {
-            int result = shipMath.GenerateRowNr(4, 20);
+            var result = shipMath.GenerateRowNr(4, 20);
             Assert.That(result, Is.EqualTo(12));
         }
 
         [Test]
         public void GenerateRowNrOdd_index4width41_return23()
         {
-            int result = shipMath.GenerateRowNr(4, 41);
+            var result = shipMath.GenerateRowNr(4, 41);
             Assert.That(result, Is.EqualTo(23));
         }
 
         [Test]
         public void GenerateRowNrOdd_index15width53_return19()
         {
-            int result = shipMath.GenerateRowNr(15, 53);
+            var result = shipMath.GenerateRowNr(15, 53);
             Assert.That(result, Is.EqualTo(19));
         }
 
@@ -71,25 +71,24 @@ namespace NUnitTestProject1
             Assert.That(result, Is.EqualTo(9));
         }
 
-
         [Test]
         public void GetMiddleEve_index4width8_return4()
         {
-            int result = shipMath.GetMiddle(8);
+            var result = shipMath.GetMiddle(8);
             Assert.That(result, Is.EqualTo(4));
         }
 
         [Test]
         public void GetMiddleOdd_width9_return5()
         {
-            int result = shipMath.GetMiddle(9);
+            var result = shipMath.GetMiddle(9);
             Assert.That(result, Is.EqualTo(5));
         }
 
         [Test]
         public void GenerateRowNrOdd_index0width53_return27()
         {
-            int result = shipMath.GenerateRowNr(0, 53);
+            var result = shipMath.GenerateRowNr(0, 53);
             Assert.That(result, Is.EqualTo(27));
         }
 
@@ -107,9 +106,8 @@ namespace NUnitTestProject1
             Assert.That(result, Is.EqualTo(28));
         }
 
-
         [Test]
-        public void GenerateRowNrOdd_index0width0_return5()
+        public void GenerateRowNrOdd_index01width0_return5()
         {
             int result = shipMath.GenerateRowNr(0, 10);
             Assert.That(result, Is.EqualTo(5));

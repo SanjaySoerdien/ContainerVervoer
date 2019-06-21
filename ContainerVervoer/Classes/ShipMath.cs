@@ -14,38 +14,30 @@ namespace ContainerVervoer.Classes
         {
             if (index == 0)
             {
-                return GetMiddle(width);
+                return Convert.ToInt32(GetMiddle(Convert.ToDouble(width)));
             }
             return IndexAlternator(index, width);
         }
 
         public int IndexAlternator(int index,int width)
         {
-            double dividedNumber= index/2;
+            double dividableNumber = Convert.ToDouble(index);
             if (index % 2 == 0)
             {
-                dividedNumber = index / 2;
+                dividableNumber = index / 2;
+                return Convert.ToInt32(GetMiddle(width) + dividableNumber);
             }
-            else
-            {
-                dividedNumber = Math.Round((double) index / 2, MidpointRounding.AwayFromZero);
-            }
-
-            if (index % 2 == 0)
-            {
-                return GetMiddle(width) + (int)dividedNumber;
-            }
-
-            return GetMiddle(width) - (int)dividedNumber;
+            dividableNumber = Math.Round((double) index / 2, MidpointRounding.AwayFromZero);
+            return Convert.ToInt32(GetMiddle(width) - (int)dividableNumber);
         }
-        public int GetMiddle(int length)
+
+        public double GetMiddle(double width)
         {
-            double value = Convert.ToDouble(length);
-            if (value % 2 == 0)
+            if (width % 2 == 0)
             {
-                return (int)value / 2;
+                return width / 2;
             }
-            return Convert.ToInt32((value / 2 )+ 0.5);
+            return Math.Round(width / 2, MidpointRounding.AwayFromZero);
         }
         #endregion
     }

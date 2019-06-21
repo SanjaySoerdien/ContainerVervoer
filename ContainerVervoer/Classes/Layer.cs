@@ -25,7 +25,7 @@ namespace ContainerVervoer.Classes
                 for (int y = 0; y < width; y++)
                 {
                     //Create rows
-                    double halfwaymark =  Math.Round((double)width / 2, MidpointRounding.AwayFromZero);
+                    double halfwaymark =  Math.Round((double)width / 2, MidpointRounding.AwayFromZero)-1;
                     if (y == halfwaymark && width % 2 == 1)
                     {
                         column.Add(new Space(Positon.Middle));
@@ -33,7 +33,8 @@ namespace ContainerVervoer.Classes
                     else if(y > halfwaymark)
                     {
                         column.Add(new Space(Positon.Right));
-                    } else if (y < halfwaymark)
+                    }
+                    else if (y < halfwaymark)
                     {
                         column.Add(new Space(Positon.Left));
                     }

@@ -62,15 +62,17 @@ namespace ContainerVervoer.Classes
             cooledContainers = GetAllCooledContainers();
             valuableContainers = GetAllValueableContainers();
             cooledAndValuableContainers = GetAllValueableAndCooledContainers();
-            int index = 0;
-            while (!FillLayersUntilDone(index))
+            int index = -1;
+            bool done = true;
+            while (done)
             {
                 index++;
                 ship.Layers.Add(new Layer(ship.Length, ship.Width));
+                done = false;
+                done = FillLayersUntilDone(index);
             }
             return ship;
         }
-
 
         public List<Status> GetResult()
         {
@@ -120,9 +122,9 @@ namespace ContainerVervoer.Classes
                         return false;
                     }
                 }
+
                 if (TotalcontainersToDistrubute() == containersToDistrubute )
                 {
-                    int q = 5;
                     ship.Layers.RemoveAt(layer);
                     return false;
                 }
@@ -134,25 +136,22 @@ namespace ContainerVervoer.Classes
         {
             for (int i = 0; i < ship.Width; i++)
             {
-                int row = shipMath.GenerateRowNr(i, ship.Width);
-                if (normalContainers.Count + cooledContainers.Count > 0)
+                int row = shipMath.GenerateRowNr(i, ship.Width-1);
+                if (cooledContainers.Count > 0 && column == 0)
                 {
-                    if (cooledContainers.Count > 0 && column == 0)
-                    {
-                        PlaceCooledContainer(layer, column, row);
-                    }
-                    else if (normalContainers.Count > 0)
-                    {
-                        PlaceNormalContainer(layer, column, row);
-                    }
-                    else if (cooledAndValuableContainers.Count > 0 && column == 0)
-                    {
-                        PlaceCooledAndValuableContainer(layer, column, row);
-                    }
-                    else if (valuableContainers.Count > 0)
-                    {
-                        PlaceValuableContainer(layer, column, row);
-                    }
+                    PlaceCooledContainer(layer, column, row);
+                }
+                else if (normalContainers.Count > 0)
+                {
+                    PlaceNormalContainer(layer, column, row);
+                }
+                else if (cooledAndValuableContainers.Count > 0 && column == 0)
+                {
+                    PlaceCooledAndValuableContainer(layer, column, row);
+                }
+                else if (valuableContainers.Count > 0)
+                {
+                    PlaceValuableContainer(layer, column, row);
                 }
             }
         }
@@ -196,12 +195,7 @@ namespace ContainerVervoer.Classes
         /// </summary>
         public bool CheckIfContainerIsPlaceable(Container container, int layer, int column, int row)
         {
-            if (!CheckBelowContainer(container, layer, column, row))
-            {
-                return false;
-            }
-
-            if (!CheckNextToContainersIfCanBePlaced(layer, column, row))
+            if (!CheckBelowContainer(container, layer, column, row) || !CheckNextToContainersIfCanBePlaced(layer, column, row))
             {
                 return false;
             }
@@ -215,7 +209,7 @@ namespace ContainerVervoer.Classes
         {
             if (layer > 0)
             {
-                if (CheckIfContainerIsPlaceableBasedOnWeight(container, layer, column, row) && //check if the its allowed by weight
+                if (CheckIfContainerIsPlaceableBasedOnWeight(container, layer, column, row) || //check if the its allowed by weight
                     CheckContainerBelow(layer, column, row)) // check if there is a container below and if its valuable
                 {
                     return false;
@@ -223,7 +217,6 @@ namespace ContainerVervoer.Classes
             }
             return true;
         }
-
 
         /// <summary>
         /// Check if there is a container can be placed based on the leftover weight of the space.
@@ -233,9 +226,9 @@ namespace ContainerVervoer.Classes
             Space spaceUnder = ship.Layers[layer - 1].GetSpace(column, row);
             if (container.Weight > spaceUnder.WeightAllowedOnTop)
             {
-                return false;
+                return true;
             }
-            return true;
+            return false;
         }
 
         /// <summary>
@@ -244,7 +237,7 @@ namespace ContainerVervoer.Classes
         public bool CheckContainerBelow(int layer, int column, int row)
         {
             Space spaceUnder = ship.Layers[layer - 1].GetSpace(column, row);
-            if (spaceUnder.Container == null || spaceUnder.Container.Valuable)
+            if (spaceUnder.Container == null && spaceUnder.Container.Valuable)
             {
                 return false;
             }
@@ -266,25 +259,25 @@ namespace ContainerVervoer.Classes
             {
                 Container containerInFront = ship.Layers[layer].GetContainer(column-1, row);
                 Container containerTwoInfront = ship.Layers[layer].GetContainer(column - 2, row);
-                if (!CheckOtherContainersToSeeIfYouCanPlace(containerInFront,containerTwoInfront))
+                if (CheckOtherContainersToSeeIfYouCanPlace(containerInFront,containerTwoInfront))
                 {
-                    return false;
+                    return true;
                 }
             }
-            return true;
+            return false;
         }
 
         /// <summary>
-        /// Checks if your not blocking a valueable container.
+        /// Checks if your not blocking a valuable container.
         /// </summary>
         public bool CheckOtherContainersToSeeIfYouCanPlace(Container containerInfront , Container containerTwoInfront)
         {
             if (containerInfront.Valuable && containerTwoInfront == null) // The assumption can be made that the valuable has space on the left
                                                                           // Otherwise it would have been placed.
             {
-                return false;
+                return true;
             }
-            return true;
+            return false;
         }
 
         /// <summary>

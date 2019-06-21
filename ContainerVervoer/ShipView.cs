@@ -127,7 +127,7 @@ namespace ContainerVervoer
 
                 for (int column = 0; column < length; column++)
                 {
-                    string value = ship.Layers[layer].LayerLayout[column][row].Container + "\n" +
+                    string value = ship.Layers[layer].LayerLayout[column][row].Container + "  \n  " +
                                    ship.Layers[layer].LayerLayout[column][row].Position;
                     cellRow.Cells[column].Value = value;
                 }
