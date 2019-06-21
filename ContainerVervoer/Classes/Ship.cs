@@ -8,23 +8,22 @@ namespace ContainerVervoer.Classes
     public class Ship
     {
         #region Fields
-        private int length;
-        private int width;
-        private int heigth;
-        private int maxWeight;
+        private readonly int length;
+        private readonly int width;
+        private readonly int maxWeight;
+
         private int currentWeight;
         private double balance;//TODO maak in view ? enzo? idk maybe remove
         private int weightLeft;
         private int weightRight;
      
-        private List<Container> containers;
-        private List<Layer> layers;
+        private readonly List<Container> containers;
+        private readonly List<Layer> layers;
         #endregion
 
         #region Properties
         public int Length => length;
         public int Width => width;
-        public int Heigth => heigth;
         public int MaxWeight => maxWeight;
         public int CurrentWeight => currentWeight;
         public double Balance => balance;
@@ -94,6 +93,7 @@ namespace ContainerVervoer.Classes
             }
             return true;
         }
+
         #region Algortihm
         private List<Container> normalContainers;
         private List<Container> cooledContainers;
@@ -146,7 +146,7 @@ namespace ContainerVervoer.Classes
 
         private void FillLayer(int layer)
         {
-            for (int column = 0; column < width - 1; column++) //todo maak logische for die over de collum looped
+            for (int column = 0; column < width - 1; column++)
             {
                 if (column == 0) 
                 {
@@ -161,7 +161,7 @@ namespace ContainerVervoer.Classes
 
         private void FillFirstColumn(int layer,int column)
         {
-            for (int i = 0; i < length - 1; i++) //todo maak logische for die over de collum looped
+            for (int i = 0; i < length - 1; i++) 
             {
                 int row = GenerateRowNr(i);
                 if (normalContainers.Count + cooledContainers.Count > 0)
@@ -179,7 +179,7 @@ namespace ContainerVervoer.Classes
         }
         private void FillColums(int layer, int column)
         {
-            for (int i = 0; i < length - 1; i++) //todo maak logische for die over de collum looped
+            for (int i = 0; i < length - 1; i++) 
             {
                 int row = GenerateRowNr(i);
                 if (normalContainers.Count > 0)
@@ -225,7 +225,10 @@ namespace ContainerVervoer.Classes
         {
             bool result = true;
             result = CheckIfContainerIsPlaceableBasedOnWeight(container, layer,  column,  row);
-
+            if (result)
+            {
+                result = CheckIfContainerIsOnTopOfValuable(layer, column, row);
+            }
             if (container.Valuable && result)
             {
                result = CheckIfContainerIsPlaceableBasedOnValuable(container, layer, column, row);
@@ -252,17 +255,26 @@ namespace ContainerVervoer.Classes
             return true;
         }
 
+        private bool CheckIfContainerIsOnTopOfValuable(int layer, int column, int row)
+        {
+
+            if (layer > 0)
+            {
+                Space spaceUnder = layers[layer - 1].LayerLayout[column][row];
+                if (spaceUnder.Container.Valuable)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         private bool CheckIfContainerIsPlaceableBasedOnValuable(Container container, int layer, int column, int row)
         {
             bool result = true;
             if (layer > 0)
             {
-                Space spaceUnder = layers[layer - 1].LayerLayout[column][row];
-                if (containerToAdd.Weight < spaceUnder.WeightAllowedOnTop)   //TODO FIX DIT
-                {
-                    return true;
-                }
-                return false;
+                 //TODO FIX DIT
             }
             return result;
         }
@@ -272,12 +284,7 @@ namespace ContainerVervoer.Classes
             bool result = true;
             if (layer > 0) 
             {
-                Space spaceUnder = layers[layer - 1].LayerLayout[column][row];
-                if (containerToAdd.Weight < spaceUnder.WeightAllowedOnTop)   //TODO FIX DIT
-                {
-                    return true;
-                }
-                return false;
+               //TODO FIX DIT
             }
             return result;
         }
@@ -302,7 +309,13 @@ namespace ContainerVervoer.Classes
 
         private void AddWeight(Space space , Container container)
         {
-            
+            currentWeight += container.Weight;
+            if (space.Position == Positon.Left)
+            {
+                weightLeft += container.Weight;
+                return;
+            }
+            weightRight += container.Weight;
         }
 
         private int GenerateRowNr(int index)

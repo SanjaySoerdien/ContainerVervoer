@@ -20,6 +20,7 @@ namespace ContainerVervoer
         {
             ship = new Ship(width,length);
             InitializeComponent();
+            shipMaxWeigthLbl.Text = ship.MaxWeight.ToString();
         }
 
         private void generateContainersBtn_Click(object sender, EventArgs e)
@@ -56,23 +57,29 @@ namespace ContainerVervoer
             if (!ship.CheckWeight())
             {
                 int weightToAdd = (ship.MaxWeight / 2) - GetTotalWeight(); 
-                MessageBox.Show($"Not enough weight, add {weightToAdd} weight"); //TODO check dis
+                MessageBox.Show($"Not enough weight, add {weightToAdd} weight"); 
                 return;
             }
-            layersBox.Items.Clear();
             ship.PlaceContainersInShip();
+            FillDataGrid(0);
+        }
+
+        private void UpdateView()
+        {
+            layersBox.Items.Clear();
             GenerateLayersCombobox();
             layersBox.SelectedIndex = 0;
-            FillDataGrid(0);
-            
-
+            weightLeftLbl.Text = ship.WeightLeft.ToString();
+            weightRightLabel.Text = ship.WeightRight.ToString();
+            shipUsedWeightLbl.Text = ship.CurrentWeight.ToString();
+            balanceLbl.Text = ship.Balance.ToString();
         }
 
         private void FillDataGrid(int layer)
         {
             layer += 1;
-            int length = ship.Layers[layer].LayerLayout[0].Count;
-            int width = ship.Layers[layer].LayerLayout.Count;
+            int length = ship.Length;
+            int width = ship.Width;
             this.shipGrid.ColumnCount = width;
             for (int r = 0; r < length; r++)
             {
@@ -100,7 +107,7 @@ namespace ContainerVervoer
         {
             for (int i = 0; i < ship.Layers.Count; i++)
             {
-                layersBox.Items.Add(i + 1); //TODO add total layers here
+                layersBox.Items.Add(i + 1); 
             }
         }
 
@@ -126,10 +133,13 @@ namespace ContainerVervoer
 
         private void layersBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int selectedIndex = layersBox.SelectedIndex;
-            if (selectedIndex > -1)
+            if (int.TryParse(layersBox.Text, out int selectedIndex))
             {
                 FillDataGrid(selectedIndex);
+            }
+            else
+            {
+                MessageBox.Show("Sort First and choose a layer");
             }
         }
     }

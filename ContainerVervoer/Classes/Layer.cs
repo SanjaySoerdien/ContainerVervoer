@@ -16,15 +16,14 @@ namespace ContainerVervoer.Classes
                 for (int y = 0; y < width; y++)
                 {
                     double halfwaymark = width / 2;
-                    if (y < width / 2)
+                    if (y < halfwaymark)
                     {
                         column.Add(new Space(Positon.Left));
                     }
                     else
                     {
-                        //todo HIER BEN JE
+                        column.Add(new Space(Positon.Right));
                     }
-
                 }
                 layerLayout.Add(column);
             }

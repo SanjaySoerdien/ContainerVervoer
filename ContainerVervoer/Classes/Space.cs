@@ -11,7 +11,11 @@ namespace ContainerVervoer.Classes
         private Container container;
         private int totalStackWeight = 0;
 
+        public Positon Position => position;
+
+        public Container Container => container;
         public int WeightAllowedOnTop => maxWeightOnContainers - totalStackWeight;
+
 
         public Space(Positon position)
         {
@@ -23,10 +27,6 @@ namespace ContainerVervoer.Classes
         {
             this.totalStackWeight = weightUnder+container.Weight;
             this.container = container;
-        }
-        public void DELETEDIT()
-        {
-            //TODO delete deze method
         }
     }
 }
