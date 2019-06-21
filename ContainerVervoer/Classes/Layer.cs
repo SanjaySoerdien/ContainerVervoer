@@ -26,16 +26,16 @@ namespace ContainerVervoer.Classes
                 {
                     //Create rows
                     double halfwaymark =  Math.Round((double)width / 2, MidpointRounding.AwayFromZero);
-                    if (y < halfwaymark)
+                    if (y == halfwaymark && width % 2 == 1)
                     {
-                        column.Add(new Space(Positon.Left));
+                        column.Add(new Space(Positon.Middle));
                     }
                     else if(y > halfwaymark)
                     {
                         column.Add(new Space(Positon.Right));
-                    } else if (y == halfwaymark)
+                    } else if (y < halfwaymark)
                     {
-                        column.Add(new Space(Positon.Middle));
+                        column.Add(new Space(Positon.Left));
                     }
                 }
                 layerLayout.Add(column);

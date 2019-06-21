@@ -54,7 +54,6 @@
   <ItemGroup>
     <Compile Include="Classes\Algoritm.cs" />
     <Compile Include="Classes\ShipMath.cs" />
-    <Compile Include="Enums\Placeability.cs" />
     <Compile Include="Enums\Position.cs" />
     <Compile Include="Classes\Container.cs" />
     <Compile Include="Enums\Status.cs" />

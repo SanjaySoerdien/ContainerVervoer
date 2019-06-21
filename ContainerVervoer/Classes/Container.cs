@@ -28,18 +28,18 @@
         {
             if (cooled && valuable)
             {
-                return $"Cooled & Valuable Container \t \n Weight:{weight}kg";
+                return $"C:{weight}kg C&V";
 
             }
             else if(cooled)
             {
-                return $"Cooled Container \t \t \n Weight:{weight}kg";
+                return $"C:{weight}kg C";
             }
             else if (valuable)
             {
-                return $"Valuable Container \t \t \n Weight:{weight}kg";
+                return $"C:{weight}kg V";
             }
-            return $"Container \t \t \n Weight:{weight}kg";
+            return $"C:{weight}kg";
         }
         #endregion
     }

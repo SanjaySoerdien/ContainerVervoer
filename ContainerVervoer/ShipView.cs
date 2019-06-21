@@ -21,7 +21,6 @@ namespace ContainerVervoer
             ship = new Ship(width,length);
             InitializeComponent();
             shipMaxWeigthLbl.Text = ship.MaxWeight.ToString();
-            ship.GenerateRandomContainers(500); // TODO Delete deze
         }
 
         private void generateContainersBtn_Click(object sender, EventArgs e)
@@ -30,8 +29,14 @@ namespace ContainerVervoer
             {
                 ship.GenerateRandomContainers(result);
             }
-            containerListBox.Items.Clear();
-            containerListBox.Items.AddRange(ship.Containers.ToArray());
+
+            for (int i = containerListBox.Items.Count - 1; i < ship.Containers.Count - 1; i++)
+            {
+                if (i > -1)
+                {
+                    containerListBox.Items.Add(ship.Containers[i]);
+                }
+            }
         }
 
         private void addBtn_Click(object sender, EventArgs e)
@@ -59,7 +64,7 @@ namespace ContainerVervoer
                 return;
             }
             List<Status> result = ship.ExecuteAlgoritm();
-            FillDataGrid(0,ship.Length,ship.Width);
+            FillDataGrid(0,ship.Length ,ship.Width);
             ShowResult(result);
             UpdateView();
         }
@@ -73,11 +78,12 @@ namespace ContainerVervoer
             }
             else
             {
-                containerListBox.Items.Clear();
+                string message = "";
                 foreach (Status status in statusesObtained)
                 {
-                    containerListBox.Items.Add(status.ToString());
+                    message += status.ToString() + "\n";
                 }
+                MessageBox.Show(message);
             }
         }
         
@@ -92,7 +98,7 @@ namespace ContainerVervoer
             balanceLbl.Text = ship.Balance.ToString();
         }
 
-        private void FillDataGrid(int layer, int length, int width)
+        /*private void FillDataGrid(int layer, int length, int width)
         {
             shipGrid.Rows.Clear();
             shipGrid.ColumnCount = width;
@@ -104,6 +110,26 @@ namespace ContainerVervoer
                 for (int row = 0; row < width ; row++)
                 {
                     cellRow.Cells[row].Value = ship.Layers[layer].LayerLayout[column][row].Container;
+                }
+                shipGrid.Rows.Add(cellRow);
+            }
+        }*/
+
+        private void FillDataGrid(int layer, int length, int width)
+        {
+            shipGrid.Columns.Clear();
+            shipGrid.ColumnCount = length;
+
+            for (int row = 0; row < width; row++)
+            {
+                DataGridViewRow cellRow = new DataGridViewRow();
+                cellRow.CreateCells(shipGrid);
+
+                for (int column = 0; column < length; column++)
+                {
+                    string value = ship.Layers[layer].LayerLayout[column][row].Container + "\n" +
+                                   ship.Layers[layer].LayerLayout[column][row].Position;
+                    cellRow.Cells[column].Value = value;
                 }
                 shipGrid.Rows.Add(cellRow);
             }
@@ -151,7 +177,7 @@ namespace ContainerVervoer
         {
             if (int.TryParse(layersBox.Text, out int selectedIndex))
             {
-                FillDataGrid(selectedIndex - 1,ship.Length,ship.Width);
+                FillDataGrid(selectedIndex - 1,ship.Length ,ship.Width);
             }
             else
             {

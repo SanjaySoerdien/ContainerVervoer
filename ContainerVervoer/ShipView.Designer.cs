@@ -86,10 +86,12 @@
             // 
             // shipGrid
             // 
-            this.shipGrid.AllowUserToOrderColumns = true;
+            this.shipGrid.AllowUserToAddRows = false;
+            this.shipGrid.AllowUserToDeleteRows = false;
             this.shipGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.shipGrid.Location = new System.Drawing.Point(59, 102);
             this.shipGrid.Name = "shipGrid";
+            this.shipGrid.ReadOnly = true;
             this.shipGrid.Size = new System.Drawing.Size(670, 477);
             this.shipGrid.TabIndex = 27;
             // 
@@ -424,9 +426,6 @@
             // containerListBox
             // 
             this.containerListBox.FormattingEnabled = true;
-            this.containerListBox.Items.AddRange(new object[] {
-            "Generate containers",
-            " or add on yourself"});
             this.containerListBox.Location = new System.Drawing.Point(7, 35);
             this.containerListBox.Name = "containerListBox";
             this.containerListBox.Size = new System.Drawing.Size(437, 251);

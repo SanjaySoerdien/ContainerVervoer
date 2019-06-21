@@ -25,11 +25,11 @@ namespace ContainerTests
             ship2.GenerateRandomContainers(100);
         }
 
-        [Test]
+        /*[Test]
         public void Test1()
         {
-            ship.AddContainer()
-        }
+            ship.AddContainer();
+        }*/
 
         
     }

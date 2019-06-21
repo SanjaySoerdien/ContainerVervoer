@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using ContainerVervoer.Enums;
@@ -15,12 +16,14 @@ namespace ContainerVervoer.Classes
         private List<Container> cooledContainers;
         private List<Container> valuableContainers;
         private List<Container> cooledAndValuableContainers;
+        private ShipMath shipMath;
         #endregion
 
         #region Constructor
         public Algoritm(Ship ship)
         {
             this.ship = ship;
+            shipMath = new ShipMath();
         }
         #endregion
 
@@ -60,7 +63,7 @@ namespace ContainerVervoer.Classes
             valuableContainers = GetAllValueableContainers();
             cooledAndValuableContainers = GetAllValueableAndCooledContainers();
             int index = 0;
-            while (FillLayer(index))
+            while (!FillLayersUntilDone(index))
             {
                 index++;
                 ship.Layers.Add(new Layer(ship.Length, ship.Width));
@@ -104,25 +107,22 @@ namespace ContainerVervoer.Classes
             return false;
         }
 
-        public bool FillLayer(int layer)
+        public bool FillLayersUntilDone(int layer)
         {
             int containersToDistrubute = TotalcontainersToDistrubute();
             if (containersToDistrubute > 0)
             {
-                for (int column = 0; column < ship.Length - 1; column++)
+                for (int column = 0; column < ship.Length; column++)
                 {
-                    if (column == 0)
+                    FillColumns(layer, column);
+                    if (TotalcontainersToDistrubute() == 0)
                     {
-                        FillFirstColumn(layer, column);
-                    }
-                    else if (column > 0)
-                    {
-                        FillColumns(layer, column);
+                        return false;
                     }
                 }
-
-                if (TotalcontainersToDistrubute() == containersToDistrubute || TotalcontainersToDistrubute()==0)
+                if (TotalcontainersToDistrubute() == containersToDistrubute )
                 {
+                    int q = 5;
                     ship.Layers.RemoveAt(layer);
                     return false;
                 }
@@ -130,14 +130,14 @@ namespace ContainerVervoer.Classes
             return true;
         }
 
-        public void FillFirstColumn(int layer, int column)
+        public void FillColumns(int layer, int column)
         {
-            for (int i = 0; i < ship.Width - 1; i++)
+            for (int i = 0; i < ship.Width; i++)
             {
-                int row = ship.ShipMath.GenerateRowNr(i, ship.Width -1);
+                int row = shipMath.GenerateRowNr(i, ship.Width);
                 if (normalContainers.Count + cooledContainers.Count > 0)
                 {
-                    if (cooledContainers.Count > 0)
+                    if (cooledContainers.Count > 0 && column == 0)
                     {
                         PlaceCooledContainer(layer, column, row);
                     }
@@ -145,9 +145,9 @@ namespace ContainerVervoer.Classes
                     {
                         PlaceNormalContainer(layer, column, row);
                     }
-                    else if (cooledAndValuableContainers.Count > 0)
+                    else if (cooledAndValuableContainers.Count > 0 && column == 0)
                     {
-                        PlaceCooledAndValueableContainer(layer, column, row);
+                        PlaceCooledAndValuableContainer(layer, column, row);
                     }
                     else if (valuableContainers.Count > 0)
                     {
@@ -157,25 +157,9 @@ namespace ContainerVervoer.Classes
             }
         }
 
-        public void FillColumns(int layer, int column)
-        {
-            for (int i = 0; i < ship.Width - 1; i++)
-            {
-                int row = ship.ShipMath.GenerateRowNr(i, ship.Width - 1);
-                if (normalContainers.Count > 0)
-                {
-                    PlaceNormalContainer(layer, column, row);
-                }
-                else if (valuableContainers.Count > 0)
-                {
-                    PlaceValuableContainer(layer, column, row);
-                }
-            }
-        }
-
         public void PlaceCooledContainer(int layer, int column, int row)
         {
-            if (CheckIfContainerIsPlaceable(cooledContainers[0], layer, column, row) == Placeability.Placeable)
+            if (CheckIfContainerIsPlaceable(cooledContainers[0], layer, column, row) )
             {
                 cooledContainers = PlaceContainer(cooledContainers, layer, column, row);
             }
@@ -183,7 +167,7 @@ namespace ContainerVervoer.Classes
 
         public void PlaceNormalContainer(int layer, int column, int row)
         {
-            if (CheckIfContainerIsPlaceable(normalContainers[0], layer, column, row) == Placeability.Placeable)
+            if (CheckIfContainerIsPlaceable(normalContainers[0], layer, column, row))
             {
                 normalContainers = PlaceContainer(normalContainers, layer, column, row);
             }
@@ -191,113 +175,116 @@ namespace ContainerVervoer.Classes
 
         public void PlaceValuableContainer(int layer, int column, int row)
         {
-            if (CheckIfContainerIsPlaceable(valuableContainers[0], layer, column, row) == Placeability.Placeable)
+            if (CheckIfContainerIsPlaceable(valuableContainers[0], layer, column, row))
             {
                 valuableContainers = PlaceContainer(valuableContainers, layer, column, row);
             }
         }
 
-        public void PlaceCooledAndValueableContainer(int layer, int column, int row)
+        public void PlaceCooledAndValuableContainer(int layer, int column, int row)
         {
-            if (CheckIfContainerIsPlaceable(cooledAndValuableContainers[0], layer, column, row) == Placeability.Placeable)
+            if (CheckIfContainerIsPlaceable(cooledAndValuableContainers[0], layer, column, row))
             {
                 cooledAndValuableContainers = PlaceContainer(cooledAndValuableContainers, layer, column, row);
             }
         }
 
-        public Placeability CheckIfContainerIsPlaceable(Container container, int layer, int column, int row)
+        /// <summary>
+        /// In fill column we already set priorities by cooled>normal>cooled and valuable>valuable
+        /// For this reason we only look if we have a container below
+        /// And if we are blocking a valuable container
+        /// </summary>
+        public bool CheckIfContainerIsPlaceable(Container container, int layer, int column, int row)
         {
-            Placeability result = CheckIfContainerIsPlaceableBasedOnWeight(container, layer, column, row);
-            if (result == Placeability.Placeable)
+            if (!CheckBelowContainer(container, layer, column, row))
             {
-                result = CheckIfContainerIsOnTopOfValuable(layer, column, row);
-            }
-            if (container.Valuable && result == Placeability.Placeable)
-            {
-                result = CheckIfContainerIsPlaceableBasedOnValuable(layer, column, row);
+                return false;
             }
 
-            if (container.Cooled && result == Placeability.Placeable)
+            if (!CheckNextToContainersIfCanBePlaced(layer, column, row))
             {
-                result = CheckIfContainerIsPlaceableBasedOnCooled(row);
+                return false;
             }
-            return result;
+            return true;
         }
 
-        public Placeability CheckIfContainerIsPlaceableBasedOnWeight(Container container, int layer, int column, int row)
+        /// <summary>
+        /// Does the necessary checks for the container below
+        /// </summary>
+        public bool CheckBelowContainer(Container container, int layer, int column, int row)
         {
             if (layer > 0)
             {
-                Space spaceUnder = ship.Layers[layer - 1].GetSpace(column, row);
-                if (container.Weight < spaceUnder.WeightAllowedOnTop)
+                if (CheckIfContainerIsPlaceableBasedOnWeight(container, layer, column, row) && //check if the its allowed by weight
+                    CheckContainerBelow(layer, column, row)) // check if there is a container below and if its valuable
                 {
-                    return Placeability.Placeable;
-                }
-                return Placeability.Unplaceable;
-            }
-            return Placeability.Placeable;
-        }
-
-        public Placeability CheckIfContainerIsOnTopOfValuable(int layer, int column, int row)
-        {
-            if (layer > 0)
-            {
-                Space spaceUnder = ship.Layers[layer - 1].GetSpace(column, row);
-                if (spaceUnder.Container != null && spaceUnder.Container.Valuable)
-                {
-                    return Placeability.Unplaceable;
+                    return false;
                 }
             }
-            return Placeability.Placeable;
-        }
-
-        /// <summary>
-        /// Checks the positions for valueable containers and returns an enum if its placeability or not
-        /// </summary>
-        public Placeability CheckIfContainerIsPlaceableBasedOnValuable(int layer, int column, int row)
-        {
-            Placeability result = Placeability.Placeable;
-            if (row > 0) //it can always be placed on first row 
-            {
-                result = CheckPositionsForValuables(layer, column, row);
-            }
-            return result;
+            return true;
         }
 
 
         /// <summary>
-        /// Calls different methods based on column and returns Placeability or not.
+        /// Check if there is a container can be placed based on the leftover weight of the space.
         /// </summary>
-        public Placeability CheckPositionsForValuables(int layer, int column, int row)
+        public bool CheckIfContainerIsPlaceableBasedOnWeight(Container container, int layer, int column, int row)
         {
-            Placeability result = Placeability.Placeable;
-            if (CheckIfContainerIsPlaced(layer, column - 1, row) && column >= 1) //check if there is container in front of the container if we are in the second column
+            Space spaceUnder = ship.Layers[layer - 1].GetSpace(column, row);
+            if (container.Weight > spaceUnder.WeightAllowedOnTop)
             {
-                if (CheckIfContainerIsPlaced(layer, column + 1, row))
-                {
-                    return Placeability.Unplaceable;
-                }
-
-                if (column >= 2 && CheckIfContainerIsPlaced(layer, column - 2, row)) //check if there is a container 2 rows in front of the container if we are in the third column
-                {
-                    result = CheckForNotBlockingValuableTwoRowsInfront( layer, column, row);
-                }
+                return false;
             }
-            return result;
+            return true;
         }
 
         /// <summary>
-        /// This method checks if there is a valueable 2 rows infront so it does not block it from behind.
+        /// Check if there is a container below to be placed on which it can be place on top of.
         /// </summary>
-        public Placeability CheckForNotBlockingValuableTwoRowsInfront(int layer, int column, int row)
+        public bool CheckContainerBelow(int layer, int column, int row)
         {
-            Container containerInFront = ship.Layers[layer].GetContainer(column - 1, row);
-            Container containerInFrontOfInFront = ship.Layers[layer].GetContainer(column - 2, row);
-            if (containerInFront != null && containerInFrontOfInFront.Valuable)
+            Space spaceUnder = ship.Layers[layer - 1].GetSpace(column, row);
+            if (spaceUnder.Container == null || spaceUnder.Container.Valuable)
             {
-                return Placeability.Unplaceable;
+                return false;
             }
-            return Placeability.Placeable;
+            return true;
+        }
+
+        /// <summary>
+        /// Calls different methods based on column.
+        /// </summary>
+        public bool CheckNextToContainersIfCanBePlaced(int layer, int column, int row)
+        {
+            if (column < 2) // if your on row 0 or 1, you can always place
+            {
+                return true;
+            }
+
+            //At least in 3rd column so we can check if there are containers next to us;
+            if (CheckIfContainerIsPlaced(layer, column - 2, row) && CheckIfContainerIsPlaced(layer, column - 1, row))
+            {
+                Container containerInFront = ship.Layers[layer].GetContainer(column-1, row);
+                Container containerTwoInfront = ship.Layers[layer].GetContainer(column - 2, row);
+                if (!CheckOtherContainersToSeeIfYouCanPlace(containerInFront,containerTwoInfront))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Checks if your not blocking a valueable container.
+        /// </summary>
+        public bool CheckOtherContainersToSeeIfYouCanPlace(Container containerInfront , Container containerTwoInfront)
+        {
+            if (containerInfront.Valuable && containerTwoInfront == null) // The assumption can be made that the valuable has space on the left
+                                                                          // Otherwise it would have been placed.
+            {
+                return false;
+            }
+            return true;
         }
 
         /// <summary>
@@ -310,16 +297,6 @@ namespace ContainerVervoer.Classes
                 return true;
             }
             return false;
-        }
-
-        public Placeability CheckIfContainerIsPlaceableBasedOnCooled(int row)
-        {
-            if (row == 0) // TODO dit is een dubbele check? sneller maar minder leesbaar als in FillCollum; Vraag mening tim
-            {
-                return Placeability.Placeable;
-            }
-
-            return Placeability.Placeable;
         }
 
         public List<Container> PlaceContainer(List<Container> containerList, int layer, int column, int row)

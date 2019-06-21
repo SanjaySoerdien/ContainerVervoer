@@ -13,10 +13,8 @@ namespace ContainerVervoer.Classes
 
         #region Properties
         public Positon Position => position;
-
         public Container Container => container;
         public int TotalStackWeight => totalStackWeight;
-
         public int WeightAllowedOnTop => maxWeightOnContainers - totalStackWeight;
         #endregion
 

@@ -114,6 +114,5 @@ namespace NUnitTestProject1
             int result = shipMath.GenerateRowNr(0, 10);
             Assert.That(result, Is.EqualTo(5));
         }
-        //TODO Delete all deze hieronder
     }
 }

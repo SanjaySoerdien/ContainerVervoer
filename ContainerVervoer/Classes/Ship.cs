@@ -20,7 +20,6 @@ namespace ContainerVervoer.Classes
 
         private List<Container> containers;
         private List<Layer> layers;
-        private ShipMath shipMath;
 
         private Algoritm algoritm;
         #endregion
@@ -30,13 +29,11 @@ namespace ContainerVervoer.Classes
         public int Width => width;
         public int MaxWeight => maxWeight;
         public int CurrentWeight => currentWeight;
-        public double Balance => (double) weightLeft / weightRight;//todo Cast unneccesacry?
+        public double Balance => Math.Round(Convert.ToDouble((double)weightLeft / weightRight), 2);
         public int WeightLeft => weightLeft;
         public int WeightRight => weightRight;
         public List<Container> Containers => containers;
         public List<Layer> Layers => layers;
-
-        public ShipMath ShipMath => shipMath;
         #endregion
 
         #region Constructors
@@ -47,7 +44,6 @@ namespace ContainerVervoer.Classes
             this.width = width;
             maxWeight = length * width * 150000;
             layers = new List<Layer>();
-            shipMath = new ShipMath();
             layers.Add(new Layer(this.length, this.width));
         }
         #endregion
@@ -73,6 +69,9 @@ namespace ContainerVervoer.Classes
         public void RemoveAllContainers()
         {
             containers.Clear();
+            currentWeight = 0;
+            weightLeft = 0;
+            weightRight = 0;
         }
 
         public void GenerateRandomContainers(int amount)
