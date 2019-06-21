@@ -94,20 +94,17 @@ namespace ContainerVervoer
 
         private void FillDataGrid(int layer,int length , int width)
         {
-            /*for (int i = 0; i < length; i++)
-            {
-                string column = string.Format("Column{0}", i + 1);
-                shipGrid.Columns.Add(column, column);
-            }*/
-            for (int column = 0; column < length; column++)
-            {
-                DataGridViewRow cellRow = new DataGridViewRow(); 
-                for (int row = 0; row < width; row++)
-                {
-                    cellRow.Cells[column].Value = ship.Layers[layer].LayerLayout[column][row]; 
-                }
-                shipGrid.Rows.Add(cellRow);
-            }
+           displayGrid.Columns.Clear();
+           displayGrid.ColumnCount = length;
+           for (int column = 0; column < length; column++)
+           {
+               DataGridViewRow cellRow = new DataGridViewRow(); 
+               for (int row = 0; row < width; row++)
+               {
+                   cellRow.Cells[row].Value = ship.Layers[layer].GetContainer(column,row); 
+               }
+               displayGrid.Rows.Add(cellRow);
+           }
         }
 
         private int GetTotalWeight()

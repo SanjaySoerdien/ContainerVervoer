@@ -25,27 +25,27 @@ namespace ContainerVervoer.Classes
         #endregion
 
         #region Methods
-        private List<Container> GetAllNormalContainers()
+        public List<Container> GetAllNormalContainers()
         {
             return ship.Containers.Where(x => !x.Valuable && !x.Cooled).OrderBy(x => x.Weight).Reverse().ToList();
         }
 
-        private List<Container> GetAllValueableContainers()
+        public List<Container> GetAllValueableContainers()
         {
             return ship.Containers.Where(x => x.Valuable && !x.Cooled).OrderBy(x => x.Weight).Reverse().ToList();
         }
 
-        private List<Container> GetAllCooledContainers()
+        public List<Container> GetAllCooledContainers()
         {
             return ship.Containers.Where(x => x.Cooled && !x.Valuable).OrderBy(x => x.Weight).Reverse().ToList();
         }
 
-        private List<Container> GetAllValueableAndCooledContainers()
+        public List<Container> GetAllValueableAndCooledContainers()
         {
             return ship.Containers.Where(x => x.Valuable && x.Cooled).OrderBy(x => x.Weight).Reverse().ToList();
         }
 
-        private int TotalcontainersToDistrubute()
+        public int TotalcontainersToDistrubute()
         {
             return normalContainers.Count +
                    cooledContainers.Count +
@@ -95,7 +95,7 @@ namespace ContainerVervoer.Classes
             return result;
         }
 
-        private bool CheckSuccessfulPlacement(List<Container> listToCheck)
+        public bool CheckSuccessfulPlacement(List<Container> listToCheck)
         {
             if (listToCheck.Count > 0)
             {
@@ -104,7 +104,7 @@ namespace ContainerVervoer.Classes
             return false;
         }
 
-        private bool FillLayer(int layer)
+        public bool FillLayer(int layer)
         {
             int containersToDistrubute = TotalcontainersToDistrubute();
             if (containersToDistrubute > 0)
@@ -130,7 +130,7 @@ namespace ContainerVervoer.Classes
             return true;
         }
 
-        private void FillFirstColumn(int layer, int column)
+        public void FillFirstColumn(int layer, int column)
         {
             for (int i = 0; i < ship.Width - 1; i++)
             {
@@ -157,7 +157,7 @@ namespace ContainerVervoer.Classes
             }
         }
 
-        private void FillColumns(int layer, int column)
+        public void FillColumns(int layer, int column)
         {
             for (int i = 0; i < ship.Width - 1; i++)
             {
@@ -173,7 +173,7 @@ namespace ContainerVervoer.Classes
             }
         }
 
-        private void PlaceCooledContainer(int layer, int column, int row)
+        public void PlaceCooledContainer(int layer, int column, int row)
         {
             if (CheckIfContainerIsPlaceable(cooledContainers[0], layer, column, row) == Placeability.Placeable)
             {
@@ -181,7 +181,7 @@ namespace ContainerVervoer.Classes
             }
         }
 
-        private void PlaceNormalContainer(int layer, int column, int row)
+        public void PlaceNormalContainer(int layer, int column, int row)
         {
             if (CheckIfContainerIsPlaceable(normalContainers[0], layer, column, row) == Placeability.Placeable)
             {
@@ -189,7 +189,7 @@ namespace ContainerVervoer.Classes
             }
         }
 
-        private void PlaceValuableContainer(int layer, int column, int row)
+        public void PlaceValuableContainer(int layer, int column, int row)
         {
             if (CheckIfContainerIsPlaceable(valuableContainers[0], layer, column, row) == Placeability.Placeable)
             {
@@ -197,7 +197,7 @@ namespace ContainerVervoer.Classes
             }
         }
 
-        private void PlaceCooledAndValueableContainer(int layer, int column, int row)
+        public void PlaceCooledAndValueableContainer(int layer, int column, int row)
         {
             if (CheckIfContainerIsPlaceable(cooledAndValuableContainers[0], layer, column, row) == Placeability.Placeable)
             {
@@ -205,7 +205,7 @@ namespace ContainerVervoer.Classes
             }
         }
 
-        private Placeability CheckIfContainerIsPlaceable(Container container, int layer, int column, int row)
+        public Placeability CheckIfContainerIsPlaceable(Container container, int layer, int column, int row)
         {
             Placeability result = CheckIfContainerIsPlaceableBasedOnWeight(container, layer, column, row);
             if (result == Placeability.Placeable)
@@ -224,7 +224,7 @@ namespace ContainerVervoer.Classes
             return result;
         }
 
-        private Placeability CheckIfContainerIsPlaceableBasedOnWeight(Container container, int layer, int column, int row)
+        public Placeability CheckIfContainerIsPlaceableBasedOnWeight(Container container, int layer, int column, int row)
         {
             if (layer > 0)
             {
@@ -238,7 +238,7 @@ namespace ContainerVervoer.Classes
             return Placeability.Placeable;
         }
 
-        private Placeability CheckIfContainerIsOnTopOfValuable(int layer, int column, int row)
+        public Placeability CheckIfContainerIsOnTopOfValuable(int layer, int column, int row)
         {
             if (layer > 0)
             {
@@ -254,7 +254,7 @@ namespace ContainerVervoer.Classes
         /// <summary>
         /// Checks the positions for valueable containers and returns an enum if its placeability or not
         /// </summary>
-        private Placeability CheckIfContainerIsPlaceableBasedOnValuable(int layer, int column, int row)
+        public Placeability CheckIfContainerIsPlaceableBasedOnValuable(int layer, int column, int row)
         {
             Placeability result = Placeability.Placeable;
             if (row > 0) //it can always be placed on first row 
@@ -268,7 +268,7 @@ namespace ContainerVervoer.Classes
         /// <summary>
         /// Calls different methods based on column and returns Placeability or not.
         /// </summary>
-        private Placeability CheckPositionsForValuables(int layer, int column, int row)
+        public Placeability CheckPositionsForValuables(int layer, int column, int row)
         {
             Placeability result = Placeability.Placeable;
             if (CheckIfContainerIsPlaced(layer, column - 1, row) && column >= 1) //check if there is container in front of the container if we are in the second column
@@ -289,7 +289,7 @@ namespace ContainerVervoer.Classes
         /// <summary>
         /// This method checks if there is a valueable 2 rows infront so it does not block it from behind.
         /// </summary>
-        private Placeability CheckForNotBlockingValuableTwoRowsInfront(int layer, int column, int row)
+        public Placeability CheckForNotBlockingValuableTwoRowsInfront(int layer, int column, int row)
         {
             Container containerInFront = ship.Layers[layer].GetContainer(column - 1, row);
             Container containerInFrontOfInFront = ship.Layers[layer].GetContainer(column - 2, row);
@@ -303,7 +303,7 @@ namespace ContainerVervoer.Classes
         /// <summary>
         /// This Method returns true if there is container placed.
         /// </summary>
-        private bool CheckIfContainerIsPlaced(int layer, int column, int row)
+        public bool CheckIfContainerIsPlaced(int layer, int column, int row)
         {
             if (ship.Layers[layer].GetContainer(column, row) != null)
             {
@@ -312,7 +312,7 @@ namespace ContainerVervoer.Classes
             return false;
         }
 
-        private Placeability CheckIfContainerIsPlaceableBasedOnCooled(int row)
+        public Placeability CheckIfContainerIsPlaceableBasedOnCooled(int row)
         {
             if (row == 0) // TODO dit is een dubbele check? sneller maar minder leesbaar als in FillCollum; Vraag mening tim
             {
@@ -322,7 +322,7 @@ namespace ContainerVervoer.Classes
             return Placeability.Placeable;
         }
 
-        private List<Container> PlaceContainer(List<Container> containerList, int layer, int column, int row)
+        public List<Container> PlaceContainer(List<Container> containerList, int layer, int column, int row)
         {
             Container containerToAdd = containerList[0];
             int weightUnder = 0;
