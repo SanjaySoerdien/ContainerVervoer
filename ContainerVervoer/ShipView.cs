@@ -39,10 +39,10 @@ namespace ContainerVervoer
         {
             
             Container containerToAdd = new Container(Convert.ToInt32(containerWeight.Text), containerValueable.Checked, containerCooled.Checked);
-            ErrorMessage result = ship.AddContainer(containerToAdd);
-            if (result != ErrorMessage.Succes)
+            Status result = ship.AddContainer(containerToAdd);
+            if (result != Status.Succes)
             {
-                if (result == ErrorMessage.TooHeavy)
+                if (result == Status.TooHeavy)
                 {
                     MessageBox.Show("Container is too heavy to be added");
                 }
@@ -60,10 +60,29 @@ namespace ContainerVervoer
                 MessageBox.Show($"Not enough weight, add {weightToAdd} weight"); 
                 return;
             }
-            ship.PlaceContainersInShip();
-            FillDataGrid(0);
+            Status[] result = ship.PlaceContainersInShip();
+            FillDataGrid(1);
+            //ShowResult(result);
         }
 
+
+        private void ShowResult(Status[] result)
+        {
+            if (result.Contains(Status.Succes))
+            {
+                MessageBox.Show("Succefully completed algoritm");
+            }
+            else
+            {
+                containerListBox.Items.Clear();
+                foreach (Status status in result)
+                {
+                    containerListBox.Items.Add(status.ToString());
+                }
+            }
+        }
+        
+        
         private void UpdateView()
         {
             layersBox.Items.Clear();
@@ -77,17 +96,14 @@ namespace ContainerVervoer
 
         private void FillDataGrid(int layer)
         {
-            layer += 1;
-            int length = ship.Length;
-            int width = ship.Width;
-            this.shipGrid.ColumnCount = width;
-            for (int r = 0; r < length; r++)
+            int layerIndex = layer - 1;
+            for (int row = 0; row < ship.Length; row++)
             {
-                DataGridViewRow row = new DataGridViewRow();
-                row.CreateCells(this.shipGrid);
-                for (int c = 0; c < width; c++)
+                DataGridViewRow cellRow = new DataGridViewRow();
+                cellRow.CreateCells(this.shipGrid); //TODO eventueel buiten de if?
+                for (int column = 0; column < ship.Width; column++)
                 {
-                    row.Cells[c].Value = ship.Layers[layer].LayerLayout[r][c].ToString();
+                    cellRow.Cells[column].Value = ship.Layers[layerIndex].LayerLayout[row][column].ToString();
                 }
                 this.shipGrid.Rows.Add(row);
             }

@@ -25,16 +25,16 @@
         {
             if (cooled && valuable)
             {
-                return $"Cooled & Valuable Container \n Weight:{weight}kg";
+                return $"Cooled & Valuable Container \t \n Weight:{weight}kg";
 
             }
             else if(cooled)
             {
-                return $"Cooled Container \t \n Weight:{weight}kg";
+                return $"Cooled Container \t \t \n Weight:{weight}kg";
             }
             else if (valuable)
             {
-                return $"Valuable Container \t \n Weight:{weight}kg";
+                return $"Valuable Container \t \t \n Weight:{weight}kg";
             }
             return $"Container \t \t \n Weight:{weight}kg";
         }

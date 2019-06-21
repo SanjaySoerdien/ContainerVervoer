@@ -8,8 +8,10 @@ namespace ContainerVervoer.Classes
         private List<List<Space>> layerLayout;
         public List<List<Space>> LayerLayout => layerLayout;
 
+
         public Layer(int length,int width)
         {
+            layerLayout = new List<List<Space>>();
             for (int x = 0; x < length; x++)
             {
                 List<Space> column = new List<Space>();
@@ -29,5 +31,16 @@ namespace ContainerVervoer.Classes
             }
         }
 
-    }
+        public Container GetContainer(int column, int row) //TODO use this one more
+        {
+            return layerLayout[column][row].Container;
+
+        }
+
+        public Space GetSpace(int column, int row) //TODO use this one more
+        {
+            return layerLayout[column][row];
+
+        }
+}
 }

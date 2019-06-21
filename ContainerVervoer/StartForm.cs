@@ -21,8 +21,8 @@ namespace ContainerVervoer
         {
             int width = -1;
             int length = -1;
-            try
-            {
+            //try
+            //{
                 width = Convert.ToInt32(widthBox.Text);
                 length = Convert.ToInt32(lengthBox.Text);
                 if (width <= 0 || length <= 0)
@@ -32,17 +32,18 @@ namespace ContainerVervoer
                 }
                 else if (width > length)
                 {
+                    return; //delete dit als je exeptions er weer in gooit
                     throw new Exception("Insert higher length then width");
                 }
                 ShipView view = new ShipView(width,length);
                 this.Hide();          
                 view.ShowDialog();     
                 this.Show();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show(ex.Message);
+            //}
         }
 
     }

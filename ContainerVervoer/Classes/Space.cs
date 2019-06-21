@@ -8,7 +8,7 @@ namespace ContainerVervoer.Classes
         private readonly int maxWeightOnContainers = 120000;
 
         private Positon position;
-        private Container container;
+        private Container container = null;
         private int totalStackWeight = 0;
 
         public Positon Position => position;
