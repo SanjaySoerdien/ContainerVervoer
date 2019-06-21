@@ -28,18 +28,17 @@
         {
             if (cooled && valuable)
             {
-                return $"C:{weight}kg C&V";
-
+                return $"{weight}kg C&V";
             }
             else if(cooled)
             {
-                return $"C:{weight}kg C";
+                return $"{weight}kg C";
             }
             else if (valuable)
             {
-                return $"C:{weight}kg V";
+                return $"{weight}kg V";
             }
-            return $"C:{weight}kg";
+            return $"{weight}kg";
         }
         #endregion
     }

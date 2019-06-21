@@ -41,7 +41,9 @@ namespace ContainerVervoer
 
         private void addBtn_Click(object sender, EventArgs e)
         {
-            Container containerToAdd = new Container(Convert.ToInt32(containerWeight.Text), containerValueable.Checked, containerCooled.Checked);
+            string number = containerWeight.Text;
+            number = number.Remove(number.IndexOf("."));
+            Container containerToAdd = new Container(Convert.ToInt32(number), containerValueable.Checked, containerCooled.Checked);
             Status result = ship.AddContainer(containerToAdd);
             if (result != Status.Succes)
             {
@@ -95,7 +97,8 @@ namespace ContainerVervoer
             weightLeftLbl.Text = ship.WeightLeft.ToString();
             weightRightLabel.Text = ship.WeightRight.ToString();
             shipUsedWeightLbl.Text = ship.CurrentWeight.ToString();
-            balanceLbl.Text = ship.Balance.ToString();
+            decimal balance = ship.Balance * 100;
+            balanceLbl.Text = $"{balance}%";
         }
 
         /*private void FillDataGrid(int layer, int length, int width)
@@ -118,6 +121,7 @@ namespace ContainerVervoer
         private void FillDataGrid(int layer, int length, int width)
         {
             shipGrid.Columns.Clear();
+
             shipGrid.ColumnCount = length;
 
             for (int row = 0; row < width; row++)

@@ -79,7 +79,7 @@
             this.groupBox1.Controls.Add(this.layersBox);
             this.groupBox1.Location = new System.Drawing.Point(485, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(792, 614);
+            this.groupBox1.Size = new System.Drawing.Size(937, 614);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Ship";
@@ -89,10 +89,11 @@
             this.shipGrid.AllowUserToAddRows = false;
             this.shipGrid.AllowUserToDeleteRows = false;
             this.shipGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.shipGrid.Location = new System.Drawing.Point(59, 102);
+            this.shipGrid.Location = new System.Drawing.Point(26, 72);
             this.shipGrid.Name = "shipGrid";
             this.shipGrid.ReadOnly = true;
-            this.shipGrid.Size = new System.Drawing.Size(670, 477);
+            this.shipGrid.RowHeadersWidth = 70;
+            this.shipGrid.Size = new System.Drawing.Size(891, 529);
             this.shipGrid.TabIndex = 27;
             // 
             // label1
@@ -356,6 +357,11 @@
             // 
             // containerWeight
             // 
+            this.containerWeight.Increment = new decimal(new int[] {
+            300,
+            0,
+            0,
+            0});
             this.containerWeight.Location = new System.Drawing.Point(86, 68);
             this.containerWeight.Maximum = new decimal(new int[] {
             30000,
@@ -370,6 +376,7 @@
             this.containerWeight.Name = "containerWeight";
             this.containerWeight.Size = new System.Drawing.Size(103, 20);
             this.containerWeight.TabIndex = 26;
+            this.containerWeight.ThousandsSeparator = true;
             this.containerWeight.Value = new decimal(new int[] {
             4000,
             0,
@@ -444,7 +451,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1290, 627);
+            this.ClientSize = new System.Drawing.Size(1434, 618);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);

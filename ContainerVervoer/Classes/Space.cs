@@ -5,17 +5,17 @@ namespace ContainerVervoer.Classes
     public class Space
     {
         #region Fields
-        private  readonly int maxWeightOnContainers = 120000;
+        private  readonly int maxWeightOnSpace = 120000;
         private readonly Positon position;
         private  Container container = null;
-        private int totalStackWeight = 0;
+        private int weightOnFirstContainer = 0;
         #endregion
 
         #region Properties
         public Positon Position => position;
         public Container Container => container;
-        public int TotalStackWeight => totalStackWeight;
-        public int WeightAllowedOnTop => maxWeightOnContainers - totalStackWeight;
+        public int TotalStackWeight => weightOnFirstContainer;
+        public int WeightAllowedOnTop => maxWeightOnSpace - weightOnFirstContainer;
         #endregion
 
         #region Constructor
@@ -28,7 +28,7 @@ namespace ContainerVervoer.Classes
         #region Methods
         public void PlaceContainer(Container container, int weightUnder)
         {
-            this.totalStackWeight = weightUnder + container.Weight;
+            this.weightOnFirstContainer = weightUnder + container.Weight;
             this.container = container;
         }
         #endregion

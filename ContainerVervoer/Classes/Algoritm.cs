@@ -68,7 +68,6 @@ namespace ContainerVervoer.Classes
             {
                 index++;
                 ship.Layers.Add(new Layer(ship.Length, ship.Width));
-                done = false;
                 done = FillLayersUntilDone(index);
             }
             return ship;
@@ -100,7 +99,7 @@ namespace ContainerVervoer.Classes
             return result;
         }
 
-        public bool CheckSuccessfulPlacement(List<Container> listToCheck)
+        public bool CheckSuccessfulPlacement(List<Container> listToCheck) //TODO Check when awake
         {
             if (listToCheck.Count > 0)
             {
@@ -156,6 +155,7 @@ namespace ContainerVervoer.Classes
             }
         }
 
+        //TODO refactor
         public void PlaceCooledContainer(int layer, int column, int row)
         {
             if (CheckIfContainerIsPlaceable(cooledContainers[0], layer, column, row) )
@@ -164,7 +164,7 @@ namespace ContainerVervoer.Classes
             }
         }
 
-        public void PlaceNormalContainer(int layer, int column, int row)
+        public bool PlaceNormalContainer(int layer, int column, int row) //TODO nu dit maken #1 prio GOGOGOGOOG check if placed enzo ez fix ding werkt 10/10
         {
             if (CheckIfContainerIsPlaceable(normalContainers[0], layer, column, row))
             {
@@ -193,7 +193,7 @@ namespace ContainerVervoer.Classes
         /// For this reason we only look if we have a container below
         /// And if we are blocking a valuable container
         /// </summary>
-        public bool CheckIfContainerIsPlaceable(Container container, int layer, int column, int row)
+        public bool CheckIfContainerIsPlaceable(Container container, int layer, int column, int row) //TODO Hier shit fixen
         {
             if (!CheckBelowContainer(container, layer, column, row) || !CheckNextToContainersIfCanBePlaced(layer, column, row))
             {
@@ -205,12 +205,13 @@ namespace ContainerVervoer.Classes
         /// <summary>
         /// Does the necessary checks for the container below
         /// </summary>
-        public bool CheckBelowContainer(Container container, int layer, int column, int row)
+        /// <returns>Returns bool if its placeable</returns>
+        public bool CheckBelowContainer(Container container, int layer, int column, int row) //TODO Refactor naar 2 containers.
         {
             if (layer > 0)
             {
-                if (CheckIfContainerIsPlaceableBasedOnWeight(container, layer, column, row) || //check if the its allowed by weight
-                    CheckContainerBelow(layer, column, row)) // check if there is a container below and if its valuable
+                if (!CheckIfContainerIsPlaceableBasedOnWeight(container, layer, column, row) || //check if the its allowed by weight
+                    !CheckContainerBelowIfPlaceable(layer, column, row)) //check if there is a container below and if its valuable
                 {
                     return false;
                 }
@@ -221,10 +222,10 @@ namespace ContainerVervoer.Classes
         /// <summary>
         /// Check if there is a container can be placed based on the leftover weight of the space.
         /// </summary>
-        public bool CheckIfContainerIsPlaceableBasedOnWeight(Container container, int layer, int column, int row)
+        public bool CheckIfContainerIsPlaceableBasedOnWeight(Container container, int layer, int column, int row) //TODO Refactor naar container en space
         {
             Space spaceUnder = ship.Layers[layer - 1].GetSpace(column, row);
-            if (container.Weight > spaceUnder.WeightAllowedOnTop)
+            if (container.Weight < spaceUnder.WeightAllowedOnTop)
             {
                 return true;
             }
@@ -234,14 +235,14 @@ namespace ContainerVervoer.Classes
         /// <summary>
         /// Check if there is a container below to be placed on which it can be place on top of.
         /// </summary>
-        public bool CheckContainerBelow(int layer, int column, int row)
+        public bool CheckContainerBelowIfPlaceable(int layer, int column, int row) //TODO Refactor naar space
         {
             Space spaceUnder = ship.Layers[layer - 1].GetSpace(column, row);
-            if (spaceUnder.Container == null && spaceUnder.Container.Valuable)
+            if (spaceUnder.Container != null && !spaceUnder.Container.Valuable)
             {
-                return false;
+                return true;
             }
-            return true;
+            return false;
         }
 
         /// <summary>
@@ -272,8 +273,8 @@ namespace ContainerVervoer.Classes
         /// </summary>
         public bool CheckOtherContainersToSeeIfYouCanPlace(Container containerInfront , Container containerTwoInfront)
         {
-            if (containerInfront.Valuable && containerTwoInfront == null) // The assumption can be made that the valuable has space on the left
-                                                                          // Otherwise it would have been placed.
+            if (containerInfront.Valuable && containerTwoInfront == null || // The assumption can be made that the valuable has space on the left
+                !containerInfront.Valuable)                                 // Otherwise it would not have been placed.
             {
                 return true;
             }
@@ -281,7 +282,7 @@ namespace ContainerVervoer.Classes
         }
 
         /// <summary>
-        /// This Method returns true if there is container placed.
+        /// This Method returns true if there is container placed on te position.
         /// </summary>
         public bool CheckIfContainerIsPlaced(int layer, int column, int row)
         {

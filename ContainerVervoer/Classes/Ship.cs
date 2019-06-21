@@ -29,7 +29,7 @@ namespace ContainerVervoer.Classes
         public int Width => width;
         public int MaxWeight => maxWeight;
         public int CurrentWeight => currentWeight;
-        public double Balance => Math.Round(Convert.ToDouble((double)weightLeft / weightRight), 2);
+        public decimal Balance => Math.Round(Convert.ToDecimal((double)weightLeft / weightRight), 2);
         public int WeightLeft => weightLeft;
         public int WeightRight => weightRight;
         public List<Container> Containers => containers;
@@ -51,14 +51,12 @@ namespace ContainerVervoer.Classes
         #region Methods
         public Status AddContainer(Container container)
         {
-            Status result = Status.Succes;
             if (currentWeight + container.Weight >= maxWeight)
             {
                 return Status.TooHeavy;
             }
             containers.Add(container);
-            currentWeight += container.Weight;
-            return result;
+            return Status.Succes;
         }
 
         public void RemoveContainer(int index)
