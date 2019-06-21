@@ -59,7 +59,7 @@ namespace ContainerVervoer
                 return;
             }
             List<Status> result = ship.ExecuteAlgoritm();
-            FillDataGrid(0,ship.Length-1,ship.Width-1);
+            FillDataGrid(0,ship.Length,ship.Width);
             ShowResult(result);
             UpdateView();
         }
@@ -92,19 +92,21 @@ namespace ContainerVervoer
             balanceLbl.Text = ship.Balance.ToString();
         }
 
-        private void FillDataGrid(int layer,int length , int width)
+        private void FillDataGrid(int layer, int length, int width)
         {
-           displayGrid.Columns.Clear();
-           displayGrid.ColumnCount = length;
-           for (int column = 0; column < length; column++)
-           {
-               DataGridViewRow cellRow = new DataGridViewRow(); 
-               for (int row = 0; row < width; row++)
-               {
-                   cellRow.Cells[row].Value = ship.Layers[layer].GetContainer(column,row); 
-               }
-               displayGrid.Rows.Add(cellRow);
-           }
+            shipGrid.Rows.Clear();
+            shipGrid.ColumnCount = width;
+            for (int column = 0; column < length ; column++)
+            {
+                DataGridViewRow cellRow = new DataGridViewRow();
+                cellRow.CreateCells(shipGrid);
+
+                for (int row = 0; row < width ; row++)
+                {
+                    cellRow.Cells[row].Value = ship.Layers[layer].LayerLayout[column][row].Container;
+                }
+                shipGrid.Rows.Add(cellRow);
+            }
         }
 
         private int GetTotalWeight()
@@ -149,7 +151,7 @@ namespace ContainerVervoer
         {
             if (int.TryParse(layersBox.Text, out int selectedIndex))
             {
-                FillDataGrid(selectedIndex - 1,ship.Length-1,ship.Width-1);
+                FillDataGrid(selectedIndex - 1,ship.Length,ship.Width);
             }
             else
             {

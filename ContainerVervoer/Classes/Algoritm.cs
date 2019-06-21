@@ -121,7 +121,7 @@ namespace ContainerVervoer.Classes
                     }
                 }
 
-                if (TotalcontainersToDistrubute() == containersToDistrubute)
+                if (TotalcontainersToDistrubute() == containersToDistrubute || TotalcontainersToDistrubute()==0)
                 {
                     ship.Layers.RemoveAt(layer);
                     return false;
@@ -185,7 +185,7 @@ namespace ContainerVervoer.Classes
         {
             if (CheckIfContainerIsPlaceable(normalContainers[0], layer, column, row) == Placeability.Placeable)
             {
-                cooledContainers = PlaceContainer(normalContainers, layer, column, row);
+                normalContainers = PlaceContainer(normalContainers, layer, column, row);
             }
         }
 

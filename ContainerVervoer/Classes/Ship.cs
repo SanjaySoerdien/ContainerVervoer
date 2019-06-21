@@ -48,7 +48,7 @@ namespace ContainerVervoer.Classes
             maxWeight = length * width * 150000;
             layers = new List<Layer>();
             shipMath = new ShipMath();
-            layers.Add(new Layer(this.length, width));
+            layers.Add(new Layer(this.length, this.width));
         }
         #endregion
 

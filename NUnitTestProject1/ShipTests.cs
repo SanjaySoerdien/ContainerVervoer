@@ -13,6 +13,7 @@ namespace ContainerTests
 
         List<Container> containers = new List<Container>
         {
+            new Container(14000,true,false)
         };
 
         [SetUp]
@@ -20,15 +21,16 @@ namespace ContainerTests
         {
             ship = new Ship(2,2);
             ship2 = new Ship(4, 4);
+            
             ship2.GenerateRandomContainers(100);
         }
 
         [Test]
-        public void FillAll()
+        public void Test1()
         {
-
-            //Assert.That(result, Is.);
-            Assert.Pass();
+            ship.AddContainer()
         }
+
+        
     }
 }
