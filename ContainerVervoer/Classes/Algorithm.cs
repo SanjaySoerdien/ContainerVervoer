@@ -51,15 +51,16 @@ namespace ContainerVervoer.Classes
             cooledContainers = GetContainersByTypeAndSorted(ContainerType.Cooled);
             valuableContainers = GetContainersByTypeAndSorted(ContainerType.Valuable);
             cooledAndValuableContainers = GetContainersByTypeAndSorted(ContainerType.CooledValuable);
-            layer= -1;
+            layer= 0;
             column = 0;
             row = 0;
+            ship.Layers.Add(new Layer(ship.Length, ship.Width));
             bool done = true;
             while (done)
             {
-                layer++;
-                ship.Layers.Add(new Layer(ship.Length, ship.Width));
                 done = FillLayersUntilDone();
+                ship.Layers.Add(new Layer(ship.Length, ship.Width, ship.Layers[layer]));
+                layer++;
             }
             return ship;
         }
@@ -175,7 +176,7 @@ namespace ContainerVervoer.Classes
                     weightUnder = spaceUnder.WeightOnFirstContainer;
                 }
                 Space spaceToAdd = ship.Layers[layer].GetSpace(column, row);
-                spaceToAdd.PlaceContainer(containerToAdd, weightUnder);
+                spaceToAdd.PlaceContainer(containerToAdd);
                 ship.AddWeight(spaceToAdd, containerToAdd);
                 return true;
             }

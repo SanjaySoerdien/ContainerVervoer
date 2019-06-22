@@ -32,12 +32,6 @@
             this.shipGrid = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
             this.layersBox = new System.Windows.Forms.ComboBox();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.label17 = new System.Windows.Forms.Label();
-            this.label16 = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.minWeightLbl = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -73,15 +67,22 @@
             this.generateContainersBtn = new System.Windows.Forms.Button();
             this.containerListBox = new System.Windows.Forms.ListBox();
             this.containersLeftListBox = new System.Windows.Forms.ListBox();
+            this.containerLbl = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.posLbl = new System.Windows.Forms.Label();
+            this.weightAllowedOnTopLbl = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.shipGrid)).BeginInit();
-            this.groupBox5.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.Balance.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.containerWeight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.containersAmountInput)).BeginInit();
+            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -130,65 +131,6 @@
             this.layersBox.Size = new System.Drawing.Size(121, 21);
             this.layersBox.TabIndex = 24;
             this.layersBox.SelectedIndexChanged += new System.EventHandler(this.layersBox_SelectedIndexChanged);
-            // 
-            // groupBox5
-            // 
-            this.groupBox5.Controls.Add(this.label17);
-            this.groupBox5.Controls.Add(this.label16);
-            this.groupBox5.Controls.Add(this.label15);
-            this.groupBox5.Controls.Add(this.label14);
-            this.groupBox5.Controls.Add(this.label13);
-            this.groupBox5.Location = new System.Drawing.Point(12, 620);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(467, 212);
-            this.groupBox5.TabIndex = 28;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Space Info";
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(23, 103);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(41, 13);
-            this.label17.TabIndex = 4;
-            this.label17.Text = "label17";
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(23, 89);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(41, 13);
-            this.label16.TabIndex = 3;
-            this.label16.Text = "label16";
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(23, 76);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(41, 13);
-            this.label15.TabIndex = 2;
-            this.label15.Text = "label15";
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(23, 63);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(41, 13);
-            this.label14.TabIndex = 1;
-            this.label14.Text = "label14";
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(23, 39);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(41, 13);
-            this.label13.TabIndex = 0;
-            this.label13.Text = "label13";
             // 
             // groupBox2
             // 
@@ -569,11 +511,80 @@
             this.containersLeftListBox.Size = new System.Drawing.Size(153, 251);
             this.containersLeftListBox.TabIndex = 29;
             // 
+            // containerLbl
+            // 
+            this.containerLbl.AutoSize = true;
+            this.containerLbl.Location = new System.Drawing.Point(173, 72);
+            this.containerLbl.Name = "containerLbl";
+            this.containerLbl.Size = new System.Drawing.Size(10, 13);
+            this.containerLbl.TabIndex = 33;
+            this.containerLbl.Text = "-";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(16, 72);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(55, 13);
+            this.label14.TabIndex = 28;
+            this.label14.Text = "Container:";
+            // 
+            // posLbl
+            // 
+            this.posLbl.AutoSize = true;
+            this.posLbl.Location = new System.Drawing.Point(173, 45);
+            this.posLbl.Name = "posLbl";
+            this.posLbl.Size = new System.Drawing.Size(10, 13);
+            this.posLbl.TabIndex = 32;
+            this.posLbl.Text = "-";
+            // 
+            // weightAllowedOnTopLbl
+            // 
+            this.weightAllowedOnTopLbl.AutoSize = true;
+            this.weightAllowedOnTopLbl.Location = new System.Drawing.Point(173, 28);
+            this.weightAllowedOnTopLbl.Name = "weightAllowedOnTopLbl";
+            this.weightAllowedOnTopLbl.Size = new System.Drawing.Size(10, 13);
+            this.weightAllowedOnTopLbl.TabIndex = 31;
+            this.weightAllowedOnTopLbl.Text = "-";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(16, 28);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(116, 13);
+            this.label17.TabIndex = 29;
+            this.label17.Text = "Weight allowed on top:";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(16, 45);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(47, 13);
+            this.label18.TabIndex = 30;
+            this.label18.Text = "Position:";
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.label17);
+            this.groupBox5.Controls.Add(this.containerLbl);
+            this.groupBox5.Controls.Add(this.weightAllowedOnTopLbl);
+            this.groupBox5.Controls.Add(this.label18);
+            this.groupBox5.Controls.Add(this.posLbl);
+            this.groupBox5.Controls.Add(this.label14);
+            this.groupBox5.Location = new System.Drawing.Point(12, 620);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(467, 212);
+            this.groupBox5.TabIndex = 34;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Space info";
+            // 
             // ShipView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1679, 890);
+            this.ClientSize = new System.Drawing.Size(1679, 878);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.containersLeftListBox);
             this.Controls.Add(this.groupBox3);
@@ -584,8 +595,6 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.shipGrid)).EndInit();
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox5.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.Balance.ResumeLayout(false);
@@ -596,6 +605,8 @@
             this.groupBox4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.containerWeight)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.containersAmountInput)).EndInit();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -640,11 +651,12 @@
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.ListBox containersLeftListBox;
-        private System.Windows.Forms.GroupBox groupBox5;
-        private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label containerLbl;
         private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label posLbl;
+        private System.Windows.Forms.Label weightAllowedOnTopLbl;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.GroupBox groupBox5;
     }
 }

@@ -19,17 +19,17 @@ namespace ContainerVervoer.Classes
         #endregion
 
         #region Constructor
-        public Space(Positon position)
+        public Space(Positon position,int weightUnderneath)
         {
             this.position = position;
+            this.weightOnFirstContainer = weightUnderneath;
         }
         #endregion
 
         #region Methods
-        public void PlaceContainer(Container container, int weightUnder)
+        public void PlaceContainer(Container container)
         {
-            int totalWeight = weightUnder + container.Weight;
-            this.weightOnFirstContainer = totalWeight;
+            weightOnFirstContainer += container.Weight;
             this.container = container;
         }
 

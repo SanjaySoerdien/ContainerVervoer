@@ -101,15 +101,14 @@ namespace ContainerVervoer
 
         private void ShowResult(List<Status> statusesObtained)
         {
+            containersLeftListBox.Items.Clear();
             if (statusesObtained.Contains(Status.Succes))
             {
-                MessageBox.Show("Succefully completed algoritm");
+                MessageBox.Show("Succefully completed algorithm");
             }
             else
             {
                 string message = "";
-                containerListBox.Items.Clear();
-
                 foreach (Container containerLeftOver in ship.Containers)
                 {
                     containersLeftListBox.Items.Add(containerLeftOver);
@@ -125,6 +124,7 @@ namespace ContainerVervoer
         
         private void UpdateView()
         {
+
             layersBox.Items.Clear();
             GenerateLayersCombobox();
             weightLeftLbl.Text = ship.WeightLeft.ToString();
@@ -147,8 +147,7 @@ namespace ContainerVervoer
 
                 for (int column = 0; column < length; column++)
                 {
-                    string value = ship.Layers[layer].LayerLayout[column][row].ToString();
-                    cellRow.Cells[column].Value = value;
+                    cellRow.Cells[column].Value = ship.Layers[layer].LayerLayout[column][row];
                 }
                 shipGrid.Rows.Add(cellRow);
             }
@@ -191,6 +190,7 @@ namespace ContainerVervoer
             containerListWeightLbl.Text = "0";
             ship.RemoveAllContainers();
             containerListBox.Items.Clear();
+            containersLeftListBox.Items.Clear();
         }
 
         private void layersBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -207,7 +207,17 @@ namespace ContainerVervoer
 
         private void shipGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            shipGrid.CurrentCell.Value;
+            Space space = (Space) shipGrid.CurrentCell.Value;
+            weightAllowedOnTopLbl.Text = space.WeightAllowedOnTop.ToString();
+            posLbl.Text = space.Position.ToString();
+            if (space.Container != null)
+            {
+                containerLbl.Text = space.Container.ToString();
+            }
+            else
+            {
+                containerLbl.Text = "No container";
+            }
         }
     }
 }
