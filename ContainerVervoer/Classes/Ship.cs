@@ -29,7 +29,7 @@ namespace ContainerVervoer.Classes
         public int Width => width;
         public int MaxWeight => maxWeight;
         public int CurrentWeight => currentWeight;
-        public decimal Balance => Math.Round(Convert.ToDecimal((double)weightLeft / weightRight), 2);
+        public decimal Balance => Math.Round(Convert.ToDecimal((double)weightLeft / weightRight), 4);
         public int WeightLeft => weightLeft;
         public int WeightRight => weightRight;
 
@@ -56,10 +56,11 @@ namespace ContainerVervoer.Classes
         #region Methods
         public Status AddContainer(Container container)
         {
-            if (currentWeight + container.Weight >= maxWeight)
+            if ((currentWeight + container.Weight) >= maxWeight)
             {
                 return Status.TooHeavy;
             }
+            currentWeight += container.Weight;
             containers.Add(container);
             return Status.Succes;
         }
@@ -77,17 +78,38 @@ namespace ContainerVervoer.Classes
             weightRight = 0;
         }
 
-        public void GenerateRandomContainers(int amount)
+        public void ClearLayers()
         {
+            layers = new List<Layer> {new Layer(this.length, this.width)};
+        }
+
+        public Status GenerateRandomContainers(int amount)
+        {
+            Status result = Status.Succes;
             Random rnd = new Random();
             for (int i = 0; i < amount; i++)
             {
                 int weight = rnd.Next(4000, 30000);
-                bool valuable = rnd.Next(1, 15).Equals(2);
-                bool cooled = rnd.Next(1, 15).Equals(2);
-                Container cont = new Container(weight, valuable, cooled);
-                AddContainer(cont);
+                ContainerType type = ContainerType.Normal;
+                if (rnd.Next(1, 12).Equals(7))
+                {
+                    if (rnd.Next(1, 15).Equals(1))
+                    {
+                        type = ContainerType.CooledValuable;
+                    }
+                    else
+                    {
+                        type = (ContainerType)rnd.Next(0, 2);
+                    }
+                }
+                Container cont = new Container(weight,type);
+                result = AddContainer(cont);
+                if (result != Status.Succes)
+                {
+                    return result;
+                }
             }
+            return result;
         }
 
         public bool CheckWeight()
@@ -123,7 +145,7 @@ namespace ContainerVervoer.Classes
         public List<Status> ExecuteAlgoritm()
         {
             algoritm = new Algorithm(this);
-            Ship resultShip = algoritm.ExecuteAlgoritm();
+            Ship resultShip = algoritm.ExecuteAlgorithm();
             this.length = resultShip.length;
             this.width = resultShip.width;
             this.maxWeight = resultShip.maxWeight;

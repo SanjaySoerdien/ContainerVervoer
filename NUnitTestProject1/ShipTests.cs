@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using ContainerVervoer.Classes;
+using ContainerVervoer.Enums;
 using NUnit.Framework;
 
 namespace ContainerTests
@@ -13,7 +14,7 @@ namespace ContainerTests
 
         List<Container> containers = new List<Container>
         {
-            new Container(14000,true,false)
+            new Container(14000,ContainerType.Normal)
         };
 
         [SetUp]

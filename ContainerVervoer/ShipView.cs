@@ -21,13 +21,15 @@ namespace ContainerVervoer
             ship = new Ship(width,length);
             InitializeComponent();
             shipMaxWeigthLbl.Text = ship.MaxWeight.ToString();
+            minWeightLbl.Text = (ship.MaxWeight / 2).ToString();
         }
 
         private void generateContainersBtn_Click(object sender, EventArgs e)
         {
+            Status status = Status.Succes;
             if (int.TryParse(containersAmountInput.Text, out int result))
             {
-                ship.GenerateRandomContainers(result);
+                status = ship.GenerateRandomContainers(result);
             }
 
             for (int i = containerListBox.Items.Count - 1; i < ship.Containers.Count - 1; i++)
@@ -35,26 +37,50 @@ namespace ContainerVervoer
                 if (i > -1)
                 {
                     containerListBox.Items.Add(ship.Containers[i]);
+                 
                 }
             }
+
+            if (status != Status.Succes)
+            {
+                MessageBox.Show(status.ToString());
+            }
+
+            containerListWeightLbl.Text = ship.CurrentWeight.ToString();
         }
 
         private void addBtn_Click(object sender, EventArgs e)
         {
-            string number = containerWeight.Text;
-            number = number.Remove(number.IndexOf("."));
-            Container containerToAdd = new Container(Convert.ToInt32(number), containerValueable.Checked, containerCooled.Checked);
+            string weight = containerWeight.Text;
+            ContainerType type = GetContainerType();
+            Container containerToAdd = new Container(Convert.ToInt32(weight), type);
             Status result = ship.AddContainer(containerToAdd);
-            if (result != Status.Succes)
+            if (result == Status.TooHeavy)
             {
-                if (result == Status.TooHeavy)
-                {
-                    MessageBox.Show("Container is too heavy to be added");
-                }
+                MessageBox.Show("Container is too heavy to be added");
                 return;
             }
-            containerListBox.Items.Clear();
-            containerListBox.Items.AddRange(ship.Containers.ToArray());
+
+            containerListWeightLbl.Text = ship.CurrentWeight.ToString();
+            containerListBox.Items.Add(containerToAdd);
+        }
+
+        private ContainerType GetContainerType()
+        {
+            ContainerType type = ContainerType.Normal;
+            if (containerValueable.Checked)
+            {
+                type = ContainerType.Valuable;
+                if (containerCooled.Checked)
+                {
+                    type = ContainerType.CooledValuable;
+                }
+            }
+            else if (containerCooled.Checked)
+            {
+                type = ContainerType.Cooled;
+            }
+            return type;
         }
 
         private void sortBtn_Click(object sender, EventArgs e)
@@ -65,6 +91,7 @@ namespace ContainerVervoer
                 MessageBox.Show($"Not enough weight, add {weightToAdd} weight"); 
                 return;
             }
+            ship.ClearLayers();
             List<Status> result = ship.ExecuteAlgoritm();
             FillDataGrid(0,ship.Length ,ship.Width);
             ShowResult(result);
@@ -104,14 +131,14 @@ namespace ContainerVervoer
             weightLeftLbl.Text = ship.WeightLeft.ToString();
             weightRightLabel.Text = ship.WeightRight.ToString();
             shipUsedWeightLbl.Text = ship.CurrentWeight.ToString();
-            var balance = ship.Balance * 100;
+            var balance = Math.Round(ship.Balance * 100, 2); ;
             balanceLbl.Text = $@"{balance}%"; 
         }
 
         private void FillDataGrid(int layer, int length, int width)
         {
             shipGrid.Columns.Clear();
-
+            shipGrid.Rows.Clear();
             shipGrid.ColumnCount = length;
 
             for (int row = 0; row < width; row++)
@@ -141,7 +168,7 @@ namespace ContainerVervoer
 
         private void GenerateLayersCombobox()
         {
-            for (int i = 0; i < ship.Layers.Count; i++)
+            for (int i = 0; i < ship.Layers.Count-1; i++)
             {
                 layersBox.Items.Add(i + 1); 
             }
@@ -163,6 +190,7 @@ namespace ContainerVervoer
 
         private void clearAllContainer_Click(object sender, EventArgs e)
         {
+            containerListWeightLbl.Text = "0";
             ship.RemoveAllContainers();
             containerListBox.Items.Clear();
         }

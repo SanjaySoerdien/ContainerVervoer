@@ -98,5 +98,12 @@ namespace NUnitTestProject1
             int result = algoritm.GenerateRowNr(0, 10);
             Assert.That(result, Is.EqualTo(5));
         }
+
+        [Test]
+        public void GenerateRowNrOdd_index11width12Minus1_returnx()
+        {
+            int result = algoritm.GenerateRowNr(11, 12);
+            Assert.That(result, Is.EqualTo(0));
+        }
     }
 }

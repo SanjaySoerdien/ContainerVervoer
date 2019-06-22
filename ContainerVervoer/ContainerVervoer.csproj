@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\Algorithm.cs" />
+    <Compile Include="Enums\ContainerType.cs" />
     <Compile Include="Enums\Position.cs" />
     <Compile Include="Classes\Container.cs" />
     <Compile Include="Enums\Status.cs" />
