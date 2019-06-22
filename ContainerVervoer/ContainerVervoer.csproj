@@ -52,8 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\Algoritm.cs" />
-    <Compile Include="Classes\ShipMath.cs" />
+    <Compile Include="Classes\Algorithm.cs" />
     <Compile Include="Enums\Position.cs" />
     <Compile Include="Classes\Container.cs" />
     <Compile Include="Enums\Status.cs" />

@@ -21,7 +21,7 @@ namespace ContainerVervoer.Classes
         private List<Container> containers;
         private List<Layer> layers;
 
-        private Algoritm algoritm;
+        private Algorithm algoritm;
         #endregion
 
         #region Properties
@@ -32,7 +32,12 @@ namespace ContainerVervoer.Classes
         public decimal Balance => Math.Round(Convert.ToDecimal((double)weightLeft / weightRight), 2);
         public int WeightLeft => weightLeft;
         public int WeightRight => weightRight;
-        public List<Container> Containers => containers;
+
+        public List<Container> Containers
+        {
+            get => containers;
+            set => containers = value;
+        }
         public List<Layer> Layers => layers;
         #endregion
 
@@ -117,7 +122,7 @@ namespace ContainerVervoer.Classes
 
         public List<Status> ExecuteAlgoritm()
         {
-            algoritm = new Algoritm(this);
+            algoritm = new Algorithm(this);
             Ship resultShip = algoritm.ExecuteAlgoritm();
             this.length = resultShip.length;
             this.width = resultShip.width;

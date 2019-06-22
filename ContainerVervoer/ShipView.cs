@@ -81,9 +81,16 @@ namespace ContainerVervoer
             else
             {
                 string message = "";
+                containerListBox.Items.Clear();
+
+                foreach (Container containerLeftOver in ship.Containers)
+                {
+                    containerListBox.Items.Add(containerLeftOver);
+                }
+
                 foreach (Status status in statusesObtained)
                 {
-                    message += status.ToString() + "\n";
+                    message += status + "\n";
                 }
                 MessageBox.Show(message);
             }
@@ -97,26 +104,9 @@ namespace ContainerVervoer
             weightLeftLbl.Text = ship.WeightLeft.ToString();
             weightRightLabel.Text = ship.WeightRight.ToString();
             shipUsedWeightLbl.Text = ship.CurrentWeight.ToString();
-            decimal balance = ship.Balance * 100;
-            balanceLbl.Text = $"{balance}%";
+            var balance = ship.Balance * 100;
+            balanceLbl.Text = $@"{balance}%"; 
         }
-
-        /*private void FillDataGrid(int layer, int length, int width)
-        {
-            shipGrid.Rows.Clear();
-            shipGrid.ColumnCount = width;
-            for (int column = 0; column < length ; column++)
-            {
-                DataGridViewRow cellRow = new DataGridViewRow();
-                cellRow.CreateCells(shipGrid);
-
-                for (int row = 0; row < width ; row++)
-                {
-                    cellRow.Cells[row].Value = ship.Layers[layer].LayerLayout[column][row].Container;
-                }
-                shipGrid.Rows.Add(cellRow);
-            }
-        }*/
 
         private void FillDataGrid(int layer, int length, int width)
         {
