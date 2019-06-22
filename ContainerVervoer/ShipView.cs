@@ -147,8 +147,7 @@ namespace ContainerVervoer
 
                 for (int column = 0; column < length; column++)
                 {
-                    string value = ship.Layers[layer].LayerLayout[column][row].Container + "  \n  " +
-                                   ship.Layers[layer].LayerLayout[column][row].Position;
+                    string value = ship.Layers[layer].LayerLayout[column][row].ToString();
                     cellRow.Cells[column].Value = value;
                 }
                 shipGrid.Rows.Add(cellRow);
@@ -204,6 +203,11 @@ namespace ContainerVervoer
             {
                 MessageBox.Show("Sort First and choose a layer");
             }
+        }
+
+        private void shipGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            shipGrid.CurrentCell.Value;
         }
     }
 }

@@ -5,7 +5,7 @@ namespace ContainerVervoer.Classes
     public class Space
     {
         #region Fields
-        private const int maxWeightOnSpace = 120000;
+        private const int maxWeightOnSpace = 150000;
         private readonly Positon position;
         private  Container container = null;
         private int weightOnFirstContainer = 0;
@@ -31,6 +31,11 @@ namespace ContainerVervoer.Classes
             int totalWeight = weightUnder + container.Weight;
             this.weightOnFirstContainer = totalWeight;
             this.container = container;
+        }
+
+        public override string ToString()
+        {
+            return Container + "  \n  " + position;
         }
         #endregion
 
