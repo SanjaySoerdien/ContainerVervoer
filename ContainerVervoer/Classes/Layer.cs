@@ -25,12 +25,14 @@ namespace ContainerVervoer.Classes
                 for (int y = 0; y < width; y++)
                 {
                     //Create rows
-                    int middleValue = Convert.ToInt32(Math.Floor((decimal)width / 2)); 
+                    int middleValue = Convert.ToInt32(Math.Floor((decimal)width / 2)); //Checks the position
+                                                                                       //and assigns it to the space
                     if (y == middleValue && width % 2 == 1)
                     {
                         column.Add(new Space(Positon.Middle));
                     }
-                    else if(y >= middleValue)
+                    else if(y >= middleValue)                                          //Greater than because if its odd and middle we make it a middle
+                                                                                       //If its even we can say that it's right
                     {
                         column.Add(new Space(Positon.Right));
                     }

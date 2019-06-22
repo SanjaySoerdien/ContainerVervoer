@@ -20,7 +20,7 @@ namespace ContainerVervoer.Classes
 
         private int layer = 0;
         private int column = 0;
-        private int row = 0;
+        private int row = 0;        
         #endregion
 
         #region Constructor
@@ -52,6 +52,8 @@ namespace ContainerVervoer.Classes
             valuableContainers = GetContainersByTypeAndSorted(ContainerType.Valuable);
             cooledAndValuableContainers = GetContainersByTypeAndSorted(ContainerType.CooledValuable);
             layer= -1;
+            column = 0;
+            row = 0;
             bool done = true;
             while (done)
             {
@@ -104,73 +106,82 @@ namespace ContainerVervoer.Classes
         {
             for (int i = 0; i < ship.Width; i++)
             {
-                row = GenerateRowNr(i,ship.Width); 
-                TryToPlaceContainer();
+                row = GenerateRowNr(i,ship.Width);
+                TryToPlaceAllContainers();
             }
         }
 
-        public void TryToPlaceContainer() //TODO refactor
+        /// <summary>
+        /// Iterates trough container types and 
+        /// </summary>
+        public void TryToPlaceAllContainers() //TODO could be refactored
         {
-            bool placed = false;
-            if (cooledContainers.Count > 0 && column == 0 && !placed)
+            Container containerToPlace;
+            if (cooledContainers.Count > 0 && column == 0)
             {
-                placed = PlaceCooledContainer();
+                containerToPlace = cooledContainers[0];
+                TryToPlaceContainer(containerToPlace);
+                if (TryToPlaceContainer(containerToPlace))
+                {
+                    cooledContainers.RemoveAt(0);
+                    return;
+                }
             }
-            if (normalContainers.Count > 0 && !placed)
+
+            if (normalContainers.Count > 0 )
             {
-                placed = PlaceNormalContainer();
+                containerToPlace = normalContainers[0];
+                if (TryToPlaceContainer(containerToPlace))
+                {
+                    normalContainers.RemoveAt(0);
+                    return;
+                }
             }
-            if (cooledAndValuableContainers.Count > 0 && column == 0 && !placed)
+
+            if (cooledAndValuableContainers.Count > 0 && column == 0)
             {
-                placed = PlaceCooledAndValuableContainer();
+                containerToPlace = cooledAndValuableContainers[0];
+                if (TryToPlaceContainer(containerToPlace))
+                {
+                    cooledAndValuableContainers.RemoveAt(0);
+                    return;
+                }
             }
-            if (valuableContainers.Count > 0 && !placed)
+
+            if (valuableContainers.Count > 0)
             {
-                placed = PlaceValuableContainer();
+                containerToPlace = valuableContainers[0];
+                if (TryToPlaceContainer(containerToPlace))
+                {
+                    valuableContainers.RemoveAt(0);
+                    return;
+                }
             }
         }
 
-        //TODO refactor
-        public bool PlaceCooledContainer()
+        /// <summary>
+        /// Tries to place container
+        /// </summary>
+        /// <param name="containerToAdd">Give container to add</param>
+        /// <returns>Returns true if succeeded</returns>
+        public bool TryToPlaceContainer(Container containerToAdd)
         {
-            if (CheckIfContainerIsPlaceable(cooledContainers[0]))
+            if (CheckIfContainerIsPlaceable(containerToAdd))
             {
-                cooledContainers = PlaceContainer(cooledContainers);
+                int weightUnder = 0;
+                if (layer > 0)
+                {
+                    Space spaceUnder = ship.Layers[layer - 1].GetSpace(column, row);
+                    weightUnder = spaceUnder.WeightOnFirstContainer;
+                }
+                Space spaceToAdd = ship.Layers[layer].GetSpace(column, row);
+                spaceToAdd.PlaceContainer(containerToAdd, weightUnder);
+                ship.AddWeight(spaceToAdd, containerToAdd);
                 return true;
             }
             return false;
         }
-
-        public bool PlaceNormalContainer() 
-        {
-            if (CheckIfContainerIsPlaceable(normalContainers[0]))
-            {
-                normalContainers = PlaceContainer(normalContainers);
-                return true;
-            }
-            return false;
-        }
-
-        public bool PlaceValuableContainer()
-        {
-            if (CheckIfContainerIsPlaceable(valuableContainers[0]))
-            {
-                valuableContainers = PlaceContainer(valuableContainers);
-                return true;
-            }
-            return false;
-        }
-
-        public bool PlaceCooledAndValuableContainer()
-        {
-            if (CheckIfContainerIsPlaceable(cooledAndValuableContainers[0]))
-            {
-                cooledAndValuableContainers = PlaceContainer(cooledAndValuableContainers);
-                return true;
-            }
-            return false;
-        }
-
+ 
         /// <summary>
         /// In fill column we already set priorities by cooled>normal>cooled and valuable>valuable
         /// For this reason we only look if we have a container below
@@ -195,7 +206,7 @@ namespace ContainerVervoer.Classes
             if (layer > 0)
             {
                 Space spaceUnder = ship.Layers[layer - 1].GetSpace(column, row);
-                if (!CheckIfContainerIsPlaceableBasedOnWeight(container) || //check if the its allowed by weight
+                if (!CheckIfContainerIsPlaceableBasedOnWeight(container, spaceUnder) || //check if the its allowed by weight
                     !CheckContainerBelowIfPlaceable(spaceUnder)) //check if there is a container below and if its valuable
                 {
                     return false;
@@ -208,9 +219,8 @@ namespace ContainerVervoer.Classes
         /// Check if there is a container can be placed based on the leftover weight of the space.
         /// </summary>
         /// <returns>Returns a boolean representing placeablity</returns>
-        public bool CheckIfContainerIsPlaceableBasedOnWeight(Container container) //TODO Refactor naar container en space
+        public bool CheckIfContainerIsPlaceableBasedOnWeight(Container container, Space spaceUnder)
         {
-            Space spaceUnder = ship.Layers[layer - 1].GetSpace(column, row);
             if (container.Weight < spaceUnder.WeightAllowedOnTop)
             {
                 return true;
@@ -224,12 +234,8 @@ namespace ContainerVervoer.Classes
         /// <returns>Returns a boolean representing placeablity</returns>
         public bool CheckContainerBelowIfPlaceable(Space spaceUnder)
         {
-            if (spaceUnder.Container != null && spaceUnder.Container.Type != ContainerType.Valuable &&
-                spaceUnder.Container.Type != ContainerType.CooledValuable)
-            {
-                return true;
-            }
-            if(spaceUnder.Container != null && spaceUnder.Container.Type != ContainerType.CooledValuable)
+            if (spaceUnder.Container != null && spaceUnder.Container.Type != ContainerType.Valuable ||
+                spaceUnder.Container != null && spaceUnder.Container.Type != ContainerType.CooledValuable)
             {
                 return true;
             }
@@ -250,7 +256,6 @@ namespace ContainerVervoer.Classes
             if (!CheckIfContainerIsPlaced(column - 1)) //if there is an open space on the left , we can always plays.
             {
                 return true;
-          
             }
 
             //At least in 3rd column so we can check if there are containers next to us;
@@ -278,8 +283,8 @@ namespace ContainerVervoer.Classes
             {
                 return true;
             }                             
-            if(containerInfront != null &&  containerInfront.Type == ContainerType.Valuable && containerTwoInfront == null || //if its valuable check if there is room on the other side so you can place it
-               containerInfront != null && containerInfront.Type == ContainerType.CooledValuable && containerTwoInfront == null)     
+            if(containerInfront != null && containerInfront.Type == ContainerType.Valuable && containerTwoInfront == null || //if its valuable check if there is room on the other side so you can place it
+               containerInfront != null && containerInfront.Type == ContainerType.CooledValuable && containerTwoInfront == null)
             {
                 return true;
             }
@@ -293,26 +298,6 @@ namespace ContainerVervoer.Classes
         {
             return ship.Layers[layer].GetContainer(columnToCheck, row) == null;
         }
-
-        /// <summary>
-        /// Places the container on a space
-        /// </summary>
-        public List<Container> PlaceContainer(List<Container> containerList)
-        {
-            Container containerToAdd = containerList[0];
-            int weightUnder = 0;
-            if (layer > 0)
-            {
-                Space spaceUnder = ship.Layers[layer - 1].GetSpace(column, row);
-                weightUnder = spaceUnder.TotalStackWeight;
-            }
-            Space spaceToAdd = ship.Layers[layer].GetSpace(column, row);
-            spaceToAdd.PlaceContainer(containerToAdd, weightUnder);
-            ship.AddWeight(spaceToAdd, containerToAdd);
-            containerList.RemoveAt(0);
-            return containerList;
-        }
-
 
         /// <summary>
         /// Inverts the index to work from the inside out. Takes a width and index and inverts accordingly
@@ -332,7 +317,7 @@ namespace ContainerVervoer.Classes
         /// Check if a list is fully emptied
         /// </summary>
         /// <returns>Returns a boolean if the list is fully emptied</returns>
-        public bool CheckSuccessfulPlacement(List<Container> listToCheck) //TODO Check when awake
+        public bool CheckSuccessfulPlacement(List<Container> listToCheck)
         {
             if (listToCheck.Count > 0)
             {

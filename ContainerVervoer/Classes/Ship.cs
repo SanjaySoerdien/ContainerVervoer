@@ -29,7 +29,7 @@ namespace ContainerVervoer.Classes
         public int Width => width;
         public int MaxWeight => maxWeight;
         public int CurrentWeight => currentWeight;
-        public decimal Balance => Math.Round(Convert.ToDecimal((double)weightLeft / weightRight), 4);
+        public decimal Marge => Math.Round(Convert.ToDecimal(((double)weightLeft / weightRight)-1)*100 , 2);
         public int WeightLeft => weightLeft;
         public int WeightRight => weightRight;
 
@@ -144,6 +144,9 @@ namespace ContainerVervoer.Classes
 
         public List<Status> ExecuteAlgoritm()
         {
+            this.currentWeight = 0;
+            this.weightLeft = 0;
+            this.weightRight = 0;
             algoritm = new Algorithm(this);
             Ship resultShip = algoritm.ExecuteAlgorithm();
             this.length = resultShip.length;

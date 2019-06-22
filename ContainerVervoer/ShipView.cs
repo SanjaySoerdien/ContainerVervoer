@@ -131,7 +131,7 @@ namespace ContainerVervoer
             weightLeftLbl.Text = ship.WeightLeft.ToString();
             weightRightLabel.Text = ship.WeightRight.ToString();
             shipUsedWeightLbl.Text = ship.CurrentWeight.ToString();
-            var balance = Math.Round(ship.Balance * 100, 2); ;
+            var balance = ship.Marge;
             balanceLbl.Text = $@"{balance}%"; 
         }
 
