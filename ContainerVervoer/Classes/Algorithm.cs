@@ -190,8 +190,18 @@ namespace ContainerVervoer.Classes
         /// <returns>Returns a boolean representing placeablity</returns>
         public bool CheckIfContainerIsPlaceable(Container container)
         {
-            if (!CheckBelowContainer(container) || !CheckNextToContainersIfCanBePlaced())
+            if (CheckNextToContainersIfCanBePlaced())
             {
+                return false;
+            }
+            if (layer > 0)
+            {
+                Space spaceUnder = ship.Layers[layer - 1].GetSpace(column, row);
+                if (CheckBelowContainer(container, spaceUnder))
+                {
+                    return true;
+                }
+
                 return false;
             }
             return true;
@@ -201,16 +211,12 @@ namespace ContainerVervoer.Classes
         /// Does the necessary checks for the container below
         /// </summary>
         ///<returns>Returns a boolean representing placeablity</returns>
-        public bool CheckBelowContainer(Container container) 
+        public bool CheckBelowContainer(Container container,Space spaceUnder)
         {
-            if (layer > 0)
+            if (!CheckIfContainerIsPlaceableBasedOnWeight(container, spaceUnder) || //check if the its allowed by weight
+                !CheckContainerBelowIfPlaceable(spaceUnder)) //check if there is a container below and if its valuable
             {
-                Space spaceUnder = ship.Layers[layer - 1].GetSpace(column, row);
-                if (!CheckIfContainerIsPlaceableBasedOnWeight(container, spaceUnder) || //check if the its allowed by weight
-                    !CheckContainerBelowIfPlaceable(spaceUnder)) //check if there is a container below and if its valuable
-                {
-                    return false;
-                }
+                return false;
             }
             return true;
         }
@@ -221,11 +227,11 @@ namespace ContainerVervoer.Classes
         /// <returns>Returns a boolean representing placeablity</returns>
         public bool CheckIfContainerIsPlaceableBasedOnWeight(Container container, Space spaceUnder)
         {
-            if (container.Weight < spaceUnder.WeightAllowedOnTop)
+            if (container.Weight > spaceUnder.WeightAllowedOnTop)
             {
-                return true;
+                return false;
             }
-            return false;
+            return true;
         }
 
         /// <summary>
@@ -234,12 +240,15 @@ namespace ContainerVervoer.Classes
         /// <returns>Returns a boolean representing placeablity</returns>
         public bool CheckContainerBelowIfPlaceable(Space spaceUnder)
         {
-            if (spaceUnder.Container != null && spaceUnder.Container.Type != ContainerType.Valuable ||
-                spaceUnder.Container != null && spaceUnder.Container.Type != ContainerType.CooledValuable)
+            if (spaceUnder.Container == null)
             {
-                return true;
+                return false;
             }
-            return false;
+            if (spaceUnder.Container.Type == ContainerType.CooledValuable || spaceUnder.Container.Type == ContainerType.Valuable)
+            {
+                return false;
+            }
+            return true;
         }
 
         /// <summary>
@@ -248,28 +257,24 @@ namespace ContainerVervoer.Classes
         /// <returns>Returns a boolean representing placeablity</returns>
         public bool CheckNextToContainersIfCanBePlaced()
         {
-            if (column < 2) // if your on row 0 or 1, you can always place
+            if (column>0 && CheckIfContainerIsPlaced(layer,column - 1,row)) //if there is an open space on the left , we can always plays.
             {
-                return true;
-            }
-
-            if (!CheckIfContainerIsPlaced(column - 1)) //if there is an open space on the left , we can always plays.
-            {
-                return true;
-            }
-
-            //At least in 3rd column so we can check if there are containers next to us;
-            if (CheckIfContainerIsPlaced(column - 2) && CheckIfContainerIsPlaced(column - 1))
-            {
-                Container containerInFront = ship.Layers[layer].GetContainer(column - 1, row);
-                Container containerTwoInfront = ship.Layers[layer].GetContainer(column - 2, row);
-                if (CheckOtherContainersToSeeIfYouCanPlace(containerInFront, containerTwoInfront)) // If there are containers
-                                                                                                   // We retrieve them and check if we are allowed
-                                                                                                   // to place them
+                if (column > 1 && CheckIfContainerIsPlaced(layer, column - 2, row))
                 {
-                    return true;
+                    Container containerInFront = ship.Layers[layer].GetContainer(column - 1, row);
+                    Container containerTwoInfront = ship.Layers[layer].GetContainer(column - 2, row);
+                    if (CheckOtherContainersToSeeIfYouCanPlace
+                            (containerInFront, containerTwoInfront)) // If there are containers
+                        // We retrieve them and check if we are allowed
+                        // to place them
+                    {
+                        return true;
+                    }
+                    return false;
                 }
+                return true;
             }
+            //At least in 3rd column so we can check if there are containers next to us;
             return false;
         }
 
@@ -278,25 +283,23 @@ namespace ContainerVervoer.Classes
         /// </summary>
         public bool CheckOtherContainersToSeeIfYouCanPlace(Container containerInfront , Container containerTwoInfront)
         {
-            if (containerInfront != null && containerInfront.Type != ContainerType.Valuable ||     // The assumption can be made that the valuable has space on the left
-                containerInfront != null && containerInfront.Type != ContainerType.CooledValuable) // Otherwise it would not have been placed.
+            if (containerInfront != null)
             {
-                return true;
-            }                             
-            if(containerInfront != null && containerInfront.Type == ContainerType.Valuable && containerTwoInfront == null || //if its valuable check if there is room on the other side so you can place it
-               containerInfront != null && containerInfront.Type == ContainerType.CooledValuable && containerTwoInfront == null)
-            {
-                return true;
+                if (containerTwoInfront != null && (containerInfront.Type == ContainerType.Valuable || containerInfront.Type == ContainerType.CooledValuable))
+                {
+                    return false;// The assumption can be made that the valuable has space on the left
+                }
             }
-            return false;
+               
+            return true;
         }
 
         /// <summary>
         /// This Method returns true if there is container placed on te position.
         /// </summary>
-        public bool CheckIfContainerIsPlaced(int columnToCheck)
+        public bool CheckIfContainerIsPlaced(int layerToCheck, int columnToCheck,int rowToCheck)
         {
-            return ship.Layers[layer].GetContainer(columnToCheck, row) == null;
+            return ship.Layers[layerToCheck].GetContainer(columnToCheck, rowToCheck) != null;
         }
 
         /// <summary>
@@ -330,7 +333,7 @@ namespace ContainerVervoer.Classes
         /// Checks if all containers are placed.
         /// </summary>
         /// <returns>Return a list of statuses</returns>
-        public List<Status> GetResult()
+        public List<Status> GetResult()   //TODO Refactor?
         {
             List<Status> result = new List<Status>();
             if (CheckSuccessfulPlacement(normalContainers))

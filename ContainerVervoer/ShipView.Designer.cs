@@ -65,6 +65,8 @@
             this.removeBtn = new System.Windows.Forms.Button();
             this.generateContainersBtn = new System.Windows.Forms.Button();
             this.containerListBox = new System.Windows.Forms.ListBox();
+            this.containersLeftListBox = new System.Windows.Forms.ListBox();
+            this.label11 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.shipGrid)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -92,9 +94,11 @@
             this.shipGrid.AllowUserToAddRows = false;
             this.shipGrid.AllowUserToDeleteRows = false;
             this.shipGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.shipGrid.ColumnHeadersVisible = false;
             this.shipGrid.Location = new System.Drawing.Point(26, 72);
             this.shipGrid.Name = "shipGrid";
             this.shipGrid.ReadOnly = true;
+            this.shipGrid.RowHeadersVisible = false;
             this.shipGrid.RowHeadersWidth = 70;
             this.shipGrid.Size = new System.Drawing.Size(891, 529);
             this.shipGrid.TabIndex = 27;
@@ -311,6 +315,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.label11);
             this.groupBox3.Controls.Add(this.containerListWeightLbl);
             this.groupBox3.Controls.Add(this.clearAllContainer);
             this.groupBox3.Controls.Add(this.label12);
@@ -477,14 +482,32 @@
             this.containerListBox.FormattingEnabled = true;
             this.containerListBox.Location = new System.Drawing.Point(7, 35);
             this.containerListBox.Name = "containerListBox";
-            this.containerListBox.Size = new System.Drawing.Size(437, 251);
+            this.containerListBox.Size = new System.Drawing.Size(268, 251);
             this.containerListBox.TabIndex = 0;
+            // 
+            // containersLeftListBox
+            // 
+            this.containersLeftListBox.FormattingEnabled = true;
+            this.containersLeftListBox.Location = new System.Drawing.Point(303, 256);
+            this.containersLeftListBox.Name = "containersLeftListBox";
+            this.containersLeftListBox.Size = new System.Drawing.Size(153, 251);
+            this.containersLeftListBox.TabIndex = 29;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(288, 19);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(104, 13);
+            this.label11.TabIndex = 29;
+            this.label11.Text = "Containers left over: ";
             // 
             // ShipView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1434, 618);
+            this.Controls.Add(this.containersLeftListBox);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -545,5 +568,7 @@
         private System.Windows.Forms.Label minWeightLbl;
         private System.Windows.Forms.Label containerListWeightLbl;
         private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.ListBox containersLeftListBox;
     }
 }

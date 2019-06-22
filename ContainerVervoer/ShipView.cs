@@ -112,7 +112,7 @@ namespace ContainerVervoer
 
                 foreach (Container containerLeftOver in ship.Containers)
                 {
-                    containerListBox.Items.Add(containerLeftOver);
+                    containersLeftListBox.Items.Add(containerLeftOver);
                 }
 
                 foreach (Status status in statusesObtained)
@@ -127,7 +127,6 @@ namespace ContainerVervoer
         {
             layersBox.Items.Clear();
             GenerateLayersCombobox();
-            layersBox.SelectedIndex = 0;
             weightLeftLbl.Text = ship.WeightLeft.ToString();
             weightRightLabel.Text = ship.WeightRight.ToString();
             shipUsedWeightLbl.Text = ship.CurrentWeight.ToString();
