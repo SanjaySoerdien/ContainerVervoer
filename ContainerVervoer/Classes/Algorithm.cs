@@ -190,7 +190,7 @@ namespace ContainerVervoer.Classes
         /// <returns>Returns a boolean representing placeablity</returns>
         public bool CheckIfContainerIsPlaceable(Container container)
         {
-            if (CheckNextToContainersIfCanBePlaced())
+            if (!CheckNextToContainersIfCanBePlaced())
             {
                 return false;
             }
@@ -257,25 +257,24 @@ namespace ContainerVervoer.Classes
         /// <returns>Returns a boolean representing placeablity</returns>
         public bool CheckNextToContainersIfCanBePlaced()
         {
-            if (column>0 && CheckIfContainerIsPlaced(layer,column - 1,row)) //if there is an open space on the left , we can always plays.
+            if (column > 0 && !CheckIfContainerIsPlaced(layer, column -1,row)) //if there is an open space on the left , we can always plays.
             {
-                if (column > 1 && CheckIfContainerIsPlaced(layer, column - 2, row))
-                {
-                    Container containerInFront = ship.Layers[layer].GetContainer(column - 1, row);
-                    Container containerTwoInfront = ship.Layers[layer].GetContainer(column - 2, row);
-                    if (CheckOtherContainersToSeeIfYouCanPlace
-                            (containerInFront, containerTwoInfront)) // If there are containers
-                        // We retrieve them and check if we are allowed
-                        // to place them
-                    {
-                        return true;
-                    }
-                    return false;
-                }
                 return true;
             }
-            //At least in 3rd column so we can check if there are containers next to us;
-            return false;
+
+            if (column > 1 && CheckIfContainerIsPlaced(layer, column -2, row)) //if we are at least in row 3 and there is a container in 2 rows to the left
+            {
+                Container containerInFront = ship.Layers[layer].GetContainer(column-1, row);
+                Container containerTwoInFront = ship.Layers[layer].GetContainer(column-2, row);
+                if (!CheckOtherContainersToSeeIfYouCanPlace
+                        (containerInFront, containerTwoInFront)) // If there are containers
+                    // We retrieve them and check if we are allowed
+                    // to place them
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         /// <summary>
@@ -287,10 +286,9 @@ namespace ContainerVervoer.Classes
             {
                 if (containerTwoInfront != null && (containerInfront.Type == ContainerType.Valuable || containerInfront.Type == ContainerType.CooledValuable))
                 {
-                    return false;// The assumption can be made that the valuable has space on the left
+                    return false; // The assumption can be made that the valuable has space on the left thus we don't check 3 rows back
                 }
             }
-               
             return true;
         }
 
@@ -299,7 +297,11 @@ namespace ContainerVervoer.Classes
         /// </summary>
         public bool CheckIfContainerIsPlaced(int layerToCheck, int columnToCheck,int rowToCheck)
         {
-            return ship.Layers[layerToCheck].GetContainer(columnToCheck, rowToCheck) != null;
+            if (ship.Layers[layerToCheck].GetContainer(columnToCheck, rowToCheck) == null)
+            {
+                return false;
+            }
+            return true;
         }
 
         /// <summary>

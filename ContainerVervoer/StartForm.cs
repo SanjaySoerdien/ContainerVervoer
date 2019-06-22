@@ -15,7 +15,7 @@ namespace ContainerVervoer
         public StartForm()
         {
             InitializeComponent();
-           // openQuickNewForm();
+            openQuickNewForm();
         }
 
         private void GoBtn_Click(object sender, EventArgs e)

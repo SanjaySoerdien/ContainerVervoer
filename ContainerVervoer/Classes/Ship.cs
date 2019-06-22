@@ -29,7 +29,7 @@ namespace ContainerVervoer.Classes
         public int Width => width;
         public int MaxWeight => maxWeight;
         public int CurrentWeight => currentWeight;
-        public decimal Marge => Math.Round(Convert.ToDecimal(((double)weightLeft / weightRight)-1)*100 , 2);
+        public decimal Marge => Math.Round(Convert.ToDecimal(weightLeft / weightRight-1)*100 , 2);
         public int WeightLeft => weightLeft;
         public int WeightRight => weightRight;
 
