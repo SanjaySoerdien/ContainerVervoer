@@ -173,7 +173,7 @@ namespace ContainerVervoer.Classes
                 if (layer > 0)
                 {
                     Space spaceUnder = ship.Layers[layer - 1].GetSpace(column, row);
-                    weightUnder = spaceUnder.WeightOnFirstContainer;
+                    weightUnder = spaceUnder.WeightOnSpace;
                 }
                 Space spaceToAdd = ship.Layers[layer].GetSpace(column, row);
                 spaceToAdd.PlaceContainer(containerToAdd);

@@ -8,28 +8,28 @@ namespace ContainerVervoer.Classes
         private const int maxWeightOnSpace = 150000;
         private readonly Positon position;
         private  Container container = null;
-        private int weightOnFirstContainer = 0;
+        private int weightOnSpace = 0;
         #endregion
 
         #region Properties
         public Positon Position => position;
         public Container Container => container;
-        public int WeightOnFirstContainer => weightOnFirstContainer;
-        public int WeightAllowedOnTop => maxWeightOnSpace - weightOnFirstContainer;
+        public int WeightOnSpace => weightOnSpace;
+        public int WeightAllowedOnTop => maxWeightOnSpace - weightOnSpace;
         #endregion
 
         #region Constructor
         public Space(Positon position,int weightUnderneath)
         {
             this.position = position;
-            this.weightOnFirstContainer = weightUnderneath;
+            this.weightOnSpace = weightUnderneath;
         }
         #endregion
 
         #region Methods
         public void PlaceContainer(Container container)
         {
-            weightOnFirstContainer += container.Weight;
+            weightOnSpace += container.Weight;
             this.container = container;
         }
 

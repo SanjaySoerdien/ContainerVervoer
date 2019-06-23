@@ -27,11 +27,11 @@ namespace NUnitTestProject1
         {
             algorithm = new Algorithm(new Ship(5, 10));
 
-            spaceValuable = new Space(Positon.Left);
-            spaceEmpty = new Space(Positon.Middle);
-            spaceCooled = new Space(Positon.Middle);
-            spaceCooledValuable = new Space(Positon.Right);
-            spaceNormal = new Space(Positon.Right);
+            spaceValuable = new Space(Positon.Left, 1200);
+            spaceEmpty = new Space(Positon.Middle,0);
+            spaceCooled = new Space(Positon.Middle,0);
+            spaceCooledValuable = new Space(Positon.Right,10000);
+            spaceNormal = new Space(Positon.Right,1634);
 
             containerValuable = new Container(24000, ContainerType.Valuable);
             containerEmpty = null;
@@ -39,10 +39,10 @@ namespace NUnitTestProject1
             containerCooledValuable = new Container(12400, ContainerType.CooledValuable);
             containerNormal = new Container(12121, ContainerType.Normal);
 
-            spaceValuable.PlaceContainer(containerValuable, 1200);
-            spaceCooled.PlaceContainer(containerCooled, 0);
-            spaceNormal.PlaceContainer(containerNormal, 10000);
-            spaceCooledValuable.PlaceContainer(containerCooledValuable, 1634);
+            spaceValuable.PlaceContainer(containerValuable);
+            spaceCooled.PlaceContainer(containerCooled);
+            spaceNormal.PlaceContainer(containerNormal);
+            spaceCooledValuable.PlaceContainer(containerCooledValuable);
         }
 
         [Test]
@@ -96,18 +96,18 @@ namespace NUnitTestProject1
         }
 
         [Test]
-        public void CheckIfContainerIsPlaceableBasedOnWeight_30000ContOn0kgSpace_True()
+        public void CheckIfContainerIsPlaceableBasedOnWeight_30000ContOn14000kgSpace_True()
         {
-            var result = algorithm.CheckIfContainerIsPlaceableBasedOnWeight(new Container(30000,ContainerType.Normal), new Space(Positon.Middle));
+            var result = algorithm.CheckIfContainerIsPlaceableBasedOnWeight(new Container(30000,ContainerType.Normal), new Space(Positon.Middle,14000));
             Assert.That(result, Is.EqualTo(true));
         }
 
         [Test]
-        public void CheckIfContainerIsPlaceableBasedOnWeight_30000ContOn13000kgSpace_False()  //TODO maybe increase readability?
+        public void CheckIfContainerIsPlaceableBasedOnWeight_30000ContOn130000kgSpace_False()  //TODO maybe increase readability?
         {
-            Space space = new Space(Positon.Middle);
+            Space space = new Space(Positon.Middle, 130000);
             Container cont = new Container(5000, ContainerType.Normal);
-            space.PlaceContainer(cont ,110000 );
+            space.PlaceContainer(cont);
             var result = algorithm.CheckIfContainerIsPlaceableBasedOnWeight(new Container(30000, ContainerType.Normal),space );
             Assert.That(result, Is.EqualTo(false));
         }

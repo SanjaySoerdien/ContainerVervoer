@@ -59,16 +59,16 @@ namespace ContainerVervoer.Classes
                     //and assigns it to the space
                     if (y == middleValue && width % 2 == 1)
                     {
-                        column.Add(new Space(Positon.Middle,layer.layerLayout[x][y].WeightOnFirstContainer));
+                        column.Add(new Space(Positon.Middle,layer.layerLayout[x][y].WeightOnSpace));
                     }
                     else if (y >= middleValue)                                          //Greater than because if its odd and middle we make it a middle
                         //If its even we can say that it's right
                     {
-                        column.Add(new Space(Positon.Right, layer.layerLayout[x][y].WeightOnFirstContainer));
+                        column.Add(new Space(Positon.Right, layer.layerLayout[x][y].WeightOnSpace));
                     }
                     else if (y < middleValue)
                     {
-                        column.Add(new Space(Positon.Left, layer.layerLayout[x][y].WeightOnFirstContainer));
+                        column.Add(new Space(Positon.Left, layer.layerLayout[x][y].WeightOnSpace));
                     }
                 }
                 layerLayout.Add(column);

@@ -9,30 +9,40 @@ namespace NUnitTestProject1
 {
     class SpaceTests
     {
-        private Space MiddleSpace = new Space(Positon.Left);
-        private Space LeftSpace = new Space(Positon.Middle);
-        private Space RightSpace = new Space(Positon.Right);
+        private Space MiddleSpace;
+        private Space LeftSpace;
+        private Space RightSpace;
+
         [SetUp]
         public void Setup()
         {
-            MiddleSpace = new Space(Positon.Left);
-            LeftSpace = new Space(Positon.Middle);
-            RightSpace = new Space(Positon.Right);
+            MiddleSpace = new Space(Positon.Left,100000);
+            LeftSpace = new Space(Positon.Middle,72000);
+            RightSpace = new Space(Positon.Right,50000);
         }
 
         [Test]
-        public void PlaceContainer_Container12000kgValueable_ReturnContainer()
+        public void PlaceContainer_Container12000kgValuableLeftSpace_ReturnContainer()
         {
             Container containerToPlace = new Container(12000,ContainerType.Valuable);
-            MiddleSpace.PlaceContainer(containerToPlace,4000);
+            LeftSpace.PlaceContainer(containerToPlace);
+            Assert.That(LeftSpace.Container, Is.EqualTo(containerToPlace));
+        }
+
+        [Test]
+        public void PlaceContainer_Container15000kgCooledValuableMiddleSpace_ReturnContainer()
+        {
+            Container containerToPlace = new Container(15000, ContainerType.CooledValuable);
+            MiddleSpace.PlaceContainer(containerToPlace);
             Assert.That(MiddleSpace.Container, Is.EqualTo(containerToPlace));
         }
 
-        public void PlaceContainer_Container15000kgCooledValueable_ReturnContainer()
+        [Test]
+        public void PlaceContainer_Container15000kgNormalRightSpace_ReturnContainer()
         {
-            Container containerToPlace = new Container(15000, ContainerType.CooledValuable);
-            MiddleSpace.PlaceContainer(containerToPlace, 7000);
-            Assert.That(MiddleSpace.Container, Is.EqualTo(containerToPlace));
+            Container containerToPlace = new Container(15000, ContainerType.Normal);
+            RightSpace.PlaceContainer(containerToPlace);
+            Assert.That(RightSpace.Container, Is.EqualTo(containerToPlace));
         }
     }
 }

@@ -9,7 +9,7 @@ namespace ContainerTests
 {
     class ShipTests
     {
-        private Ship ship;
+        private Ship ship1;
         private Ship ship2;
 
         List<Container> containers = new List<Container>
@@ -20,18 +20,17 @@ namespace ContainerTests
         [SetUp]
         public void Setup()
         {
-            ship = new Ship(2,2);
-            ship2 = new Ship(4, 4);
-            
-            ship2.GenerateRandomContainers(100);
+            ship1 = new Ship(2,2);
+            ship2 = new Ship(10, 5);
         }
 
-        /*[Test]
-        public void Test1()
+        [Test]
+        public void GenerateContainers_100_returnCount100()
         {
-            ship.AddContainer();
-        }*/
-
-        
+            var ship = ship2;
+            ship.GenerateRandomContainers(100);
+            var result = ship.Containers.Count;
+            Assert.That(result,Is.EqualTo(100));
+        }
     }
 }
