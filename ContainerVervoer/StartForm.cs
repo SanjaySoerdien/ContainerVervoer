@@ -15,7 +15,6 @@ namespace ContainerVervoer
         public StartForm()
         {
             InitializeComponent();
-            openQuickNewForm();
         }
 
         private void GoBtn_Click(object sender, EventArgs e)
@@ -52,12 +51,5 @@ namespace ContainerVervoer
             this.Show();
         }
 
-        private void openQuickNewForm()
-        {
-            ShipView view = new ShipView(5, 10);
-            this.Hide();
-            view.ShowDialog();
-            this.Show();
-        }
     }
 }
