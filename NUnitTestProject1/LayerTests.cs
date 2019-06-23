@@ -6,7 +6,7 @@ using ContainerVervoer.Classes;
 using ContainerVervoer.Enums;
 using NUnit.Framework;
 
-namespace NUnitTestProject1
+namespace ContainerTests
 {
     class LayerTests
     {
@@ -92,5 +92,13 @@ namespace NUnitTestProject1
             var result = space.WeightOnSpace;
             Assert.That(result, Is.EqualTo(35000));
         }
+
+/*        [Test]
+        public void GetSpace_Layer2C2R0_ReturnWeightOnSpace35000()
+        {
+            var space = layer2.GetSpace(1, 0);
+            var result = space.WeightOnSpace;
+            Assert.That(result, Is.EqualTo(35000));
+        }*/
     }
 }

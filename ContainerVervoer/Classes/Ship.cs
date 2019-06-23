@@ -120,7 +120,7 @@ namespace ContainerVervoer.Classes
             {
                 totalWeight += container.Weight;
             }
-            if (totalWeight < (maxWeight / 2))
+            if (totalWeight < (maxWeight / 2) || totalWeight > maxWeight)
             {
                 return false;
             }

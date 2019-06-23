@@ -5,7 +5,7 @@ using ContainerVervoer.Classes;
 using ContainerVervoer.Enums;
 using NUnit.Framework;
 
-namespace NUnitTestProject1
+namespace ContainerTests
 {
     class AlgorithmTests
     {
@@ -287,6 +287,75 @@ namespace NUnitTestProject1
         {
             int result = algorithm.GenerateRowNr(11, 12);
             Assert.That(result, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void ContainersByTypeAndSorted_AddRandomAndCooled_returnListOnlyValAndSorted()
+        {
+            var ship = new Ship(20,25);
+            ContainerType containerTypeToSortFor = ContainerType.Valuable;
+
+            ship.GenerateRandomContainers(400);
+            ship.AddContainer(new Container(5000, containerTypeToSortFor));
+            ship.AddContainer(new Container(5000, ContainerType.Cooled));
+
+            var localAlgorithm = new Algorithm(ship);
+            var containerList = localAlgorithm.GetContainersByTypeAndSorted(containerTypeToSortFor);
+            int lastWeight = 0;
+            var resultType = true;
+            var resultSorted = true;
+
+            foreach (var container in containerList)
+            {
+                if (container.Weight < lastWeight && resultSorted)
+                {
+                    lastWeight = container.Weight;
+                    resultSorted = false;
+                }
+                if (container.Type != ContainerType.Valuable)
+                {
+                    resultType = false;
+                }
+                
+            }
+            Assert.Multiple(() =>
+            {
+                Assert.That(resultType,Is.EqualTo(true));
+                Assert.That(resultSorted, Is.EqualTo(true));
+            });
+        }
+
+        public void ContainersByTypeAndSorted_AddRandomAndValuable_returnListSortedByWeightAndNormal()
+        {
+            var ship = new Ship(20, 25);
+            ContainerType containerTypeToSortFor = ContainerType.Normal;
+            ship.GenerateRandomContainers(400);
+            ship.AddContainer(new Container(5000, containerTypeToSortFor));
+            ship.AddContainer(new Container(5000, ContainerType.Valuable));
+
+            var localAlgorithm = new Algorithm(ship);
+            var containerList = localAlgorithm.GetContainersByTypeAndSorted(containerTypeToSortFor);
+            int lastWeight = 0;
+            var resultType = true;
+            var resultSorted = true;
+            foreach (var container in containerList)
+            {
+                if (container.Weight < lastWeight && resultSorted)
+                {
+                    lastWeight = container.Weight;
+                    resultSorted = false;
+                }
+                if (container.Type != containerTypeToSortFor)
+                {
+                    resultType = false;
+                }
+
+            }
+            Assert.Multiple(() =>
+            {
+                Assert.That(resultType, Is.EqualTo(true));
+                Assert.That(resultSorted, Is.EqualTo(true));
+            });
         }
     }
 }

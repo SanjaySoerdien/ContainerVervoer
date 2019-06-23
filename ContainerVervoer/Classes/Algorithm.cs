@@ -54,12 +54,16 @@ namespace ContainerVervoer.Classes
             layer= 0;
             column = 0;
             row = 0;
-            ship.Layers.Add(new Layer(ship.Length, ship.Width));
             bool done = true;
+            ship.Layers.Add(new Layer(ship.Length, ship.Width));
+
             while (done)
             {
+                if (layer > 0)
+                {
+                    ship.Layers.Add(new Layer(ship.Length, ship.Width, ship.Layers[layer]));
+                }
                 done = FillLayersUntilDone();
-                ship.Layers.Add(new Layer(ship.Length, ship.Width, ship.Layers[layer]));
                 layer++;
             }
             return ship;

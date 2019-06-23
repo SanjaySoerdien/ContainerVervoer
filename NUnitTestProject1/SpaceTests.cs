@@ -5,7 +5,7 @@ using ContainerVervoer.Classes;
 using ContainerVervoer.Enums;
 using NUnit.Framework;
 
-namespace NUnitTestProject1
+namespace ContainerTests
 {
     class SpaceTests
     {
